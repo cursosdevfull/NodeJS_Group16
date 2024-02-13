@@ -1,0 +1,27 @@
+{
+  "name": "nodejs_group16",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cursosdevfull/NodeJS_Group16.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cursosdevfull/NodeJS_Group16/issues"
+  },
+  "homepage": "https://github.com/cursosdevfull/NodeJS_Group16#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
