@@ -1,8 +1,18 @@
-import express, { Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 
-const app = express();
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
+class App {
+  expressApp: Application;
 
-export { app };
+  constructor() {
+    this.expressApp = express();
+    this.mountRoutes();
+  }
+
+  mountRoutes() {
+    this.expressApp.get("/", (req: Request, res: Response) => {
+      res.send("Hello World!");
+    });
+  }
+}
+
+export default new App().expressApp;

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["src/modules/core/*"],
+      "@course/*": ["src/modules/course/*"]
+    }
+  }
+}
