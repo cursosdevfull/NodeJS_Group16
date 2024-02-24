@@ -39,3 +39,7 @@ interface ISchedule {
   updatedAt: Date;
   deletedAt: Date;
 }
+
+const day = "MONDAY";
+const freq: FREQUENCY = FREQUENCY[day as keyof typeof FREQUENCY];
+//const freq: FREQUENCY = day as FREQUENCY
