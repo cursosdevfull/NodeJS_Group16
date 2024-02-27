@@ -28,7 +28,7 @@ export class CourseDto {
     }
 
     const course = new Course({
-      courseId: entity.id,
+      courseId: entity.courseId,
       title: entity.title,
       slug: entity.slug,
       status: entity.status as CourseStatus,

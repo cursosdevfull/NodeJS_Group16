@@ -3,31 +3,33 @@ import { CourseEntity } from "./entities/course.entity";
 export class CourseMemory {
   private courses: CourseEntity[] = [];
 
-  async createCourse(course: CourseEntity) {
-    this.courses.push(course);
+  async save(course: CourseEntity) {
+    const courseMatched = this.courses.find(
+      (c) => c.courseId === course.courseId
+    );
+    if (!courseMatched) {
+      this.courses.push(course);
+    } else {
+      const index = this.courses.indexOf(courseMatched);
+      this.courses[index] = course;
+    }
   }
 
-  async updateCourse(course: CourseEntity) {
-    const index = this.courses.findIndex((c) => c.id === course.id);
-    this.courses[index] = course;
+  async getAll() {
+    const courses = this.courses.filter((course) => !course.deletedAt);
+    return [...courses];
   }
 
-  async deleteCourse(course: CourseEntity) {
-    const index = this.courses.findIndex((c) => c.id === course.id);
-    this.courses[index] = course;
+  async getById(courseId: string) {
+    return this.courses.find(
+      (course) => course.courseId === courseId && !course.deletedAt
+    );
   }
 
-  async listCourses() {
-    return [...this.courses];
-  }
-
-  async getCourseById(courseId: string) {
-    return this.courses.find((c) => c.id === courseId);
-  }
-
-  async getCoursesByPage(page: number, pageSize: number) {
+  async getByPage(page: number, pageSize: number) {
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
-    return [...this.courses.slice(start, end)];
+    const courses = this.courses.filter((course) => !course.deletedAt);
+    return [...courses.slice(start, end)];
   }
 }

@@ -1,5 +1,5 @@
 export class CourseEntity {
-  id: string;
+  courseId: string;
   title: string;
   slug: string;
   status: string;

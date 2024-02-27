@@ -1,0 +1,27 @@
+post http://localhost:3000/course
+content-type: application/json
+
+{
+    "title": "Node.js",
+    "slug": "node-js"
+}
+
+###
+put http://localhost:3000/course/afcc83a5-fdf2-41ef-8831-6bb28dd183e5
+content-type: application/json
+
+{
+    "title": "NodeJS PRO"
+}
+
+###
+get http://localhost:3000/coursexxxx
+
+###
+delete http://localhost:3000/course/2ecb7444-e327-4885-95ee-a139926d3ccc
+
+###
+get http://localhost:3000/course/53910942-84f3-4a3e-90cc-f12be2e83748
+
+###
+get http://localhost:3000/course/page/1/size/20
