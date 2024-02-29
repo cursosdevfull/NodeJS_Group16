@@ -15,7 +15,7 @@ content-type: application/json
 }
 
 ###
-get http://localhost:3000/coursexxxx
+get http://localhost:3000/course
 
 ###
 delete http://localhost:3000/course/2ecb7444-e327-4885-95ee-a139926d3ccc

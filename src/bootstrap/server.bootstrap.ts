@@ -1,3 +1,4 @@
+import { Parameters } from "@core/parameters";
 import { Application } from "express";
 import http from "http";
 
@@ -10,14 +11,15 @@ export class ServerBootstrap implements IBootstrap {
     const promise = new Promise((resolve, reject) => {
       const server = http.createServer(this.app);
 
+      const port = Parameters.port;
+
       server
-        .listen(3000)
+        .listen(port)
         .on("listening", () => {
-          console.log("Server is listening on port 3000");
+          console.log(`Server is listening on port ${port}`);
           resolve(true);
         })
         .on("error", (err) => {
-          //console.error("Error happened", err);
           reject(err);
         });
     });

@@ -16,9 +16,7 @@ export class CourseController {
     private readonly courseGetAll: CourseGetAll,
     private readonly courseGetById: CourseGetById,
     private readonly courseGetByPage: CourseGetByPage
-  ) {
-    //this.getAll = this.getAll.bind(this); // apply, call
-  }
+  ) {}
 
   async create(req: Request, res: Response) {
     const { title, slug } = req.body;

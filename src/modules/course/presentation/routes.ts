@@ -25,9 +25,6 @@ export class CourseRoute {
       "/:courseId",
       this.controller.delete.bind(this.controller)
     );
-    /* this.router.get("/", (req: Request, res: Response) => {
-      this.controller.getAll(req, res);
-    }); */
     this.router.get("/", this.controller.getAll.bind(this.controller));
     this.router.get(
       "/:courseId",
