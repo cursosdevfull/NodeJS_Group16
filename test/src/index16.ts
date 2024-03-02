@@ -5,9 +5,9 @@ AppDataSource.initialize()
     try {
       const manager = AppDataSource.manager;
 
-      const results = await manager.query("call sp_list_users()");
-      console.log("results: ", results);
-      console.log("users", results[0]);
+      const users = await manager.query("SELECT * FROM user");
+
+      console.log("Users: ", users);
     } catch (error) {}
   })
   .catch((error) => {

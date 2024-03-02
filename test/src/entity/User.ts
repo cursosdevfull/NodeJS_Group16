@@ -1,8 +1,8 @@
 import {
   Column,
   Entity,
-  JoinColumn,
-  OneToOne,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -25,7 +25,10 @@ export class UserEntity {
   @Column({ nullable: true, type: "varchar", length: 100 })
   secret: string;
 
-  @OneToOne(() => CarEntity, (car) => car.user)
-  @JoinColumn()
-  car: CarEntity;
+  @ManyToMany(() => CarEntity, (car) => car.users, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  cars: CarEntity[];
 }

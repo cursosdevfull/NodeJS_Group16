@@ -1,13 +1,13 @@
 import { AppDataSource } from "./data-source";
+import { UserEntity } from "./entity/User";
 
 AppDataSource.initialize()
   .then(async () => {
     try {
       const manager = AppDataSource.manager;
 
-      const results = await manager.query("call sp_list_users()");
-      console.log("results: ", results);
-      console.log("users", results[0]);
+      const users = await manager.getRepository(UserEntity).find();
+      console.log("Users: ", users);
     } catch (error) {}
   })
   .catch((error) => {

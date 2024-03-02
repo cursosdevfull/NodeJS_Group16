@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import { CarEntity } from "./Car";
 
@@ -25,7 +19,6 @@ export class UserEntity {
   @Column({ nullable: true, type: "varchar", length: 100 })
   secret: string;
 
-  @OneToOne(() => CarEntity, (car) => car.user, { cascade: true })
-  @JoinColumn()
-  car: CarEntity;
+  @OneToMany(() => CarEntity, (car) => car.user, { cascade: true })
+  cars: CarEntity[];
 }
