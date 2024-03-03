@@ -1,5 +1,9 @@
-import CourseRouter from "@course/presentation/routes";
+import { CourseResolver } from "@course/presentation/resolvers/course.resolver";
+import { ApolloServer } from "apollo-server-express";
 import express, { Application, NextFunction, Request, Response } from "express";
+import { buildSchema } from "type-graphql";
+
+import CourseRouter from "./modules/course/presentation/routes";
 
 class App {
   expressApp: Application;
@@ -7,6 +11,7 @@ class App {
   constructor() {
     this.expressApp = express();
     this.middlewares();
+    this.mountGraphQL();
     this.mountRoutes();
     this.mountErrorHandlers();
   }
@@ -16,6 +21,19 @@ class App {
     this.expressApp.use(
       express.urlencoded({ extended: true /*limit: "200mb"*/ })
     ); // querystring, qs
+  }
+
+  async mountGraphQL() {
+    const server = new ApolloServer({
+      schema: await buildSchema({
+        resolvers: [CourseResolver],
+      }),
+      context: ({ req, res }) => ({ req, res }),
+    });
+
+    await server.start();
+
+    server.applyMiddleware({ app: this.expressApp, path: "/graphql" });
   }
 
   mountRoutes() {

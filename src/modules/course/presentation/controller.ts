@@ -5,9 +5,11 @@ import {
   CourseSave,
 } from "@course/application";
 import { Course, CourseProperties } from "@course/domain/course";
+import { validate, ValidationError } from "class-validator";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
+import { CourseRequestDto } from "./dtos/course-request.dto";
 import { CourseResponseDto } from "./dtos/course-response.dto";
 
 export class CourseController {
@@ -20,6 +22,20 @@ export class CourseController {
 
   async create(req: Request, res: Response) {
     const { title, slug } = req.body;
+
+    const dtoRequest = new CourseRequestDto();
+    dtoRequest.title = title;
+    dtoRequest.slug = slug;
+
+    const errors: ValidationError[] = await validate(dtoRequest, {
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      forbidUnknownValues: true,
+    });
+    if (errors.length > 0) {
+      return res.status(411).json({ errors });
+    }
+
     const courseId = uuidv4();
 
     const props: CourseProperties = {
