@@ -1,4 +1,6 @@
 import { CourseEntity } from "@course/infrastructure/entities/course.entity";
+import { RoleEntity } from "@role/infrastructure/entities/role.entity";
+import { UserEntity } from "@user/infrastructure/entities/user.entity";
 
 export class Parameters {
   static get port(): number {
@@ -12,7 +14,7 @@ export class Parameters {
       username: process.env.DB_USERNAME || "user",
       password: process.env.DB_PASSWORD || "12345",
       database: process.env.DB_NAME || "db",
-      entities: [CourseEntity],
+      entities: [CourseEntity, UserEntity, RoleEntity],
       synchronize: process.env.DB_SYNCHRONIZE
         ? process.env.DB_SYNCHRONIZE === "true"
           ? true

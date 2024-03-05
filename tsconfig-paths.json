@@ -3,7 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@core/*": ["src/modules/core/*"],
-      "@course/*": ["src/modules/course/*"]
+      "@course/*": ["src/modules/course/*"],
+      "@user/*": ["src/modules/user/*"],
+      "@role/*": ["src/modules/role/*"]
     }
   }
 }

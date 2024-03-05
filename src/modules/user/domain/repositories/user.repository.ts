@@ -1,5 +1,8 @@
-import { BaseRepository } from "@core/domain/repositories/base.repository";
-
 import { User } from "../roots/user";
 
-export interface UserRepository extends BaseRepository<User> {}
+export interface UserRepository {
+  save(user: User): Promise<void>;
+  getAll(): Promise<User[]>;
+  getById(userId: number): Promise<User>;
+  getByPage(page: number, pageSize: number): Promise<User[]>;
+}
