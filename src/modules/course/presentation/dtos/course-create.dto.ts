@@ -1,14 +1,16 @@
-import { IsNotEmpty, IsString, MinLength } from "class-validator";
+import { Allow, IsNotEmpty, IsString, MinLength } from "class-validator";
 import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()
-export class CourseRequestDto {
+export class CourseCreateDto {
+  @Allow()
   @Field()
   @IsNotEmpty()
   @IsString()
   @MinLength(5)
   title: string;
 
+  @Allow()
   @Field()
   @IsNotEmpty()
   @IsString()

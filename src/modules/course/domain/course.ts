@@ -1,4 +1,9 @@
-export type CourseStatus = "draft" | "published";
+//export type CourseStatus = "draft" | "published";
+export enum CourseStatus {
+  DRAFT = "draft",
+  PUBLISHED = "published",
+}
+
 export interface CourseRequired {
   courseId: string;
   title: string;
@@ -28,7 +33,7 @@ export class Course {
 
   constructor(props: CourseProperties) {
     Object.assign(this, props);
-    this.status = props.status || "draft";
+    this.status = props.status || CourseStatus.DRAFT;
     this.createdAt = props.createdAt || new Date();
   }
 

@@ -5,11 +5,11 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { v4 as uuidv4 } from "uuid";
 
 import { CourseRepository } from "../../domain/repositories/course.repository";
-import { CourseRequestDto } from "../dtos/course-request.dto";
+import { CourseCreateDto } from "../dtos/course-create.dto";
 
-@Resolver(CourseRequestDto)
+@Resolver(CourseCreateDto)
 export class CourseResolver {
-  @Mutation((returns) => CourseRequestDto)
+  @Mutation((returns) => CourseCreateDto)
   async createCourse(@Arg("title") title: string, @Arg("slug") slug: string) {
     const courseId = uuidv4();
 
@@ -24,14 +24,14 @@ export class CourseResolver {
     const courseSave = new CourseSave(courseRepository);
     const valueReturned = await courseSave.execute(course);
 
-    const instance = new CourseRequestDto();
+    const instance = new CourseCreateDto();
     instance.title = title;
     instance.slug = slug;
 
     return instance;
   }
 
-  @Query(() => [CourseRequestDto])
+  @Query(() => [CourseCreateDto])
   async getAllCourses() {
     const courseRepository: CourseRepository = new CourseInfrastructure();
     const courseGetAll = new CourseGetAll(courseRepository);

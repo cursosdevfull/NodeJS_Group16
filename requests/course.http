@@ -2,17 +2,14 @@ post http://localhost:3000/course
 content-type: application/json
 
 {
-    "title": "Microservicios con NestJS y Pulumi",
-    "slug": "microservicios-con-nestjs-y-pulumi",
-    "description": "Aprende a crear microservicios con NestJS y Pulumi"
+    "title": "Microservicios con NestJS y Pulumi3"
 }
 
 ###
-put http://localhost:3000/course/26f23a71-a38b-4bf0-a344-198c21255abe
+put http://localhost:3000/course/064e691e-1267-4959-9c93-5b57ce8bb708
 content-type: application/json
 
 {
-    "title": "NodeJS PRO desde cero hasta avanzado",
     "status": "published"
 }
 
