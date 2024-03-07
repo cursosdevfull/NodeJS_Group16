@@ -1,14 +1,9 @@
-import {
-  CourseGetAll,
-  CourseGetById,
-  CourseGetByPage,
-  CourseSave,
-} from "@course/application";
-import { CourseRepository } from "@course/domain/repositories/course.repository";
-import { CourseInfrastructure } from "@course/infrastructure/course.infrastructure";
-import { Router } from "express";
+import { CourseGetAll, CourseGetById, CourseGetByPage, CourseSave } from '@course/application';
+import { CourseRepository } from '@course/domain/repositories/course.repository';
+import { CourseInfrastructure } from '@course/infrastructure/course.infrastructure';
+import { Router } from 'express';
 
-import { CourseController } from "./controller";
+import { CourseController } from './controller';
 
 export class CourseRoute {
   readonly router: Router;

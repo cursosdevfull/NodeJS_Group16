@@ -21,6 +21,7 @@ export class UserInfrastructure implements UserRepository {
       DatabaseBootstrap.getDataSource().getRepository(UserEntity);
     const usersEntity = await repository.find({
       where: { deletedAt: IsNull() },
+      relations: ["roles"],
     });
 
     return UserDto.fromDataToDomain(usersEntity) as User[];
@@ -31,6 +32,7 @@ export class UserInfrastructure implements UserRepository {
       DatabaseBootstrap.getDataSource().getRepository(UserEntity);
     const userEntity = await repository.findOne({
       where: { userId, deletedAt: IsNull() },
+      relations: ["roles"],
     });
     return UserDto.fromDataToDomain(userEntity) as User;
   }
@@ -42,6 +44,7 @@ export class UserInfrastructure implements UserRepository {
       where: { deletedAt: IsNull() },
       take: pageSize,
       skip: (page - 1) * pageSize,
+      relations: ["roles"],
     });
     return UserDto.fromDataToDomain(userEntities) as User[];
   }

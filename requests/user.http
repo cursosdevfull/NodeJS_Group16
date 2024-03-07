@@ -1,0 +1,32 @@
+post http://localhost:3000/user
+content-type: application/json
+
+{
+    "name": "Pierina",
+    "lastname": "Gonzalez",
+    "email": "pierina@email.com",
+    "password": "12345",
+    "roles": [{"roleId":1}, {"roleId": 2}]
+}
+
+###
+put http://localhost:3000/user/1
+content-type: application/json
+
+{
+    "name": "Carmen"
+}
+
+###
+get http://localhost:3000/user/1
+
+
+###
+delete http://localhost:3000/user/1
+
+###
+get http://localhost:3000/user
+
+###
+get http://localhost:3000/user/page/1/size/20
+

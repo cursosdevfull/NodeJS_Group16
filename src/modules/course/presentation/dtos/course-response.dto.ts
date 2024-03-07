@@ -1,10 +1,18 @@
-import { Course } from "@course/domain/course";
-import { plainToInstance } from "class-transformer";
+import { Course } from '@course/domain/course';
+import { Expose, plainToInstance } from 'class-transformer';
 
 export class CourseResponse {
+  @Expose()
   courseId: string;
+
+  @Expose()
   title: string;
+
+  @Expose()
   slug: string;
+
+  @Expose()
+  status: string;
 }
 
 export class CourseResponseDto {
@@ -17,11 +25,8 @@ export class CourseResponseDto {
       ) as CourseResponse[];
     }
 
-    return plainToInstance(
-      CourseResponse,
-      entity.properties /*{
-      excludeExtraneousValues: true,
-    }*/
-    );
+    return plainToInstance(CourseResponse, entity.properties, {
+      strategy: "excludeAll",
+    });
   }
 }

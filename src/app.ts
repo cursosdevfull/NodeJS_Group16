@@ -4,6 +4,7 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import { buildSchema } from "type-graphql";
 
 import CourseRouter from "./modules/course/presentation/routes";
+import UserRouter from "./modules/user/presentation/routes";
 
 class App {
   expressApp: Application;
@@ -38,6 +39,7 @@ class App {
 
   mountRoutes() {
     this.expressApp.use("/course", CourseRouter);
+    this.expressApp.use("/user", UserRouter);
   }
 
   mountErrorHandlers() {

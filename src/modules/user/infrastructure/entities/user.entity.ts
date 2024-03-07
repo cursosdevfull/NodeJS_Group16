@@ -27,7 +27,7 @@ export class UserEntity {
   @Column({ type: "varchar", length: 255 })
   refreshToken: string;
 
-  @Column({ type: "varchar", length: 255 })
+  @Column({ type: "varchar", length: 255, nullable: true })
   secret: string;
 
   @Column({ type: "timestamp", nullable: false })

@@ -1,9 +1,13 @@
 import "reflect-metadata";
 
+import dotenv from "dotenv";
+
 import app from "./app";
 import { TInitialize } from "./bootstrap/bootstrap.interface";
 import { DatabaseBootstrap } from "./bootstrap/database.bootstrap";
 import { ServerBootstrap } from "./bootstrap/server.bootstrap";
+
+dotenv.config();
 
 (async () => {
   const server = new ServerBootstrap(app);

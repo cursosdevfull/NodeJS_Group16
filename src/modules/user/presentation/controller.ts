@@ -1,17 +1,12 @@
 import { ControllerBase } from "@core/presentation/controller-base";
-import {
-  UserGetAll,
-  UserGetById,
-  UserGetByPage,
-  UserSave,
-} from "@user/application";
+import { UserGetById, UserGetByPage, UserSave } from "@user/application";
 import { User, UserProperties } from "@user/domain/roots/user";
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 
+import { UserGetAll } from "../application/user-get-all";
 import { UserCreateDto } from "./dtos/user-create.dto";
 import { UserDeleteDto } from "./dtos/user-delete.dto";
-import { UserGetByIdDto } from "./dtos/user-get-by-id";
+import { UserGetByIdDto } from "./dtos/user-get-by-id.dto";
 import { UserGetByPageDto } from "./dtos/user-get-by-page";
 import { UserResponseDto } from "./dtos/user-response.dto";
 import { UserUpdateDto } from "./dtos/user-update.dto";
@@ -19,8 +14,8 @@ import { UserUpdateDto } from "./dtos/user-update.dto";
 export class UserController extends ControllerBase {
   constructor(
     private readonly userSave: UserSave,
-    private readonly userGetAll: UserGetAll,
     private readonly userGetById: UserGetById,
+    private readonly userGetAll: UserGetAll,
     private readonly userGetByPage: UserGetByPage
   ) {
     super();
@@ -34,12 +29,12 @@ export class UserController extends ControllerBase {
       return res.status(400).json(errors);
     }
 
-    const userId = uuidv4();
-
     const props: UserProperties = {
-      userId,
-      title,
-      slug,
+      name,
+      lastname,
+      email,
+      password,
+      roles,
     };
 
     const user = new User(props);
@@ -59,31 +54,10 @@ export class UserController extends ControllerBase {
       return res.status(400).json(errors);
     }
 
-    const user = await this.userGetById.execute(userId);
+    const user = await this.userGetById.execute(+userId);
     user.update(body);
     const valueReturned = await this.userSave.execute(user);
     res.json(valueReturned);
-  }
-
-  async delete(req: Request, res: Response) {
-    const { userId } = req.params;
-
-    const errors = await this.validateParameters(UserDeleteDto, {
-      userId,
-    });
-    if (errors) {
-      return res.status(400).json(errors);
-    }
-
-    const user = await this.userGetById.execute(userId);
-    user.delete();
-    const valueReturned = await this.userSave.execute(user);
-    res.json(valueReturned);
-  }
-
-  async getAll(req: Request, res: Response) {
-    const users = await this.userGetAll.execute();
-    res.json(UserResponseDto.fromDomainToResponse(users));
   }
 
   async getById(req: Request, res: Response) {
@@ -96,8 +70,29 @@ export class UserController extends ControllerBase {
       return res.status(400).json(errors);
     }
 
-    const user = await this.userGetById.execute(userId);
+    const user = await this.userGetById.execute(+userId);
     res.json(UserResponseDto.fromDomainToResponse(user));
+  }
+
+  async delete(req: Request, res: Response) {
+    const { userId } = req.params;
+
+    const errors = await this.validateParameters(UserDeleteDto, {
+      userId,
+    });
+    if (errors) {
+      return res.status(400).json(errors);
+    }
+
+    const user = await this.userGetById.execute(+userId);
+    user.delete();
+    const valueReturned = await this.userSave.execute(user);
+    res.json(valueReturned);
+  }
+
+  async getAll(req: Request, res: Response) {
+    const users = await this.userGetAll.execute();
+    res.json(UserResponseDto.fromDomainToResponse(users));
   }
 
   async getByPage(req: Request, res: Response) {

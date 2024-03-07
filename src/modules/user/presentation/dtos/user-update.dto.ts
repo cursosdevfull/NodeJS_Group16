@@ -2,7 +2,6 @@ import { Type } from "class-transformer";
 import {
   ArrayMinSize,
   IsArray,
-  IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -18,25 +17,20 @@ export class Role {
   name: string;
 }
 
-export class UserCreateDto {
-  @IsNotEmpty()
+export class UserUpdateDto {
+  @IsOptional()
   @IsString()
   name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   lastname: string;
 
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   password: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
