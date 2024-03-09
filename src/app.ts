@@ -3,6 +3,7 @@ import { ApolloServer } from "apollo-server-express";
 import express, { Application, NextFunction, Request, Response } from "express";
 import { buildSchema } from "type-graphql";
 
+import AuthRouter from "./modules/auth/presentation/routes";
 import CourseRouter from "./modules/course/presentation/routes";
 import UserRouter from "./modules/user/presentation/routes";
 
@@ -40,6 +41,7 @@ class App {
   mountRoutes() {
     this.expressApp.use("/course", CourseRouter);
     this.expressApp.use("/user", UserRouter);
+    this.expressApp.use("/auth", AuthRouter);
   }
 
   mountErrorHandlers() {

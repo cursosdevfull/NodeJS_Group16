@@ -48,4 +48,27 @@ export class UserInfrastructure implements UserRepository {
     });
     return UserDto.fromDataToDomain(userEntities) as User[];
   }
+
+  async getByEmail(email: string): Promise<User> {
+    const repository =
+      DatabaseBootstrap.getDataSource().getRepository(UserEntity);
+    const userEntity = await repository.findOne({
+      where: { email, deletedAt: IsNull() },
+      relations: ["roles"],
+    });
+    return UserDto.fromDataToDomain(userEntity) as User;
+  }
+
+  async getByRefreshToken(refreshToken: string): Promise<User | null> {
+    const repository =
+      DatabaseBootstrap.getDataSource().getRepository(UserEntity);
+    const userEntity = await repository.findOne({
+      where: { refreshToken, deletedAt: IsNull() },
+      relations: ["roles"],
+    });
+
+    if (!userEntity) return null;
+
+    return UserDto.fromDataToDomain(userEntity) as User;
+  }
 }

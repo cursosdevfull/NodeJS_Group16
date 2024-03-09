@@ -2,9 +2,9 @@ post http://localhost:3000/user
 content-type: application/json
 
 {
-    "name": "Pierina",
-    "lastname": "Gonzalez",
-    "email": "pierina@email.com",
+    "name": "Sergio",
+    "lastname": "Hidalgo",
+    "email": "sergio@email.com",
     "password": "12345",
     "roles": [{"roleId":1}, {"roleId": 2}]
 }
@@ -25,7 +25,8 @@ get http://localhost:3000/user/1
 delete http://localhost:3000/user/1
 
 ###
-get http://localhost:3000/user
+get http://localhost:4000/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiU2VyZ2lvIiwibGFzdG5hbWUiOiJIaWRhbGdvIiwicm9sZXMiOlt7InJvbGVJZCI6MSwibmFtZSI6IkFETUlOIn0seyJyb2xlSWQiOjIsIm5hbWUiOiJPUEVSQVRPUiJ9XSwiaWF0IjoxNzA5OTUxNDg0LCJleHAiOjE3MDk5NTE3ODR9.CkVSzH2RtvVcKPlSWPWHKz-GF_CakWObCPT1i4ps038
 
 ###
 get http://localhost:3000/user/page/1/size/20

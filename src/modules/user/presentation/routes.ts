@@ -1,3 +1,5 @@
+import { AuthenticationMiddleware } from "@core/middlewares/authentication.middleware";
+import { AuthorizationMiddleware } from "@core/middlewares/authorization.middleware";
 import {
   UserGetAll,
   UserGetById,
@@ -26,7 +28,12 @@ export class UserRoute {
       "/:userId",
       this.controller.delete.bind(this.controller)
     );
-    this.router.get("/", this.controller.getAll.bind(this.controller));
+    this.router.get(
+      "/",
+      AuthenticationMiddleware.execute,
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
+      this.controller.getAll.bind(this.controller)
+    );
     this.router.get(
       "/page/:page/size/:pageSize",
       this.controller.getByPage.bind(this.controller)

@@ -20,7 +20,9 @@ export interface UserOptional {
 }
 
 export type UserProperties = UserRequired & Partial<UserOptional>;
-export type UserPropertiesToUpdate = Partial<Omit<UserRequired, "email">>;
+export type UserPropertiesToUpdate = Partial<
+  Omit<UserRequired, "email"> & Pick<UserOptional, "refreshToken">
+>;
 
 export class User {
   private userId: number;

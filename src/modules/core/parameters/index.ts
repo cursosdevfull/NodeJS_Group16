@@ -21,4 +21,15 @@ export class Parameters {
       maxQueryExecutionTime: Number(process.env.DB_MAX_QUERY_EXECUTION_TIME),
     };
   }
+
+  static get jwtConfig() {
+    return {
+      secret: process.env.JWT_SECRET,
+      expiresIn: Number(process.env.JWT_EXPIRES_IN),
+    };
+  }
+
+  static get recaptchaSecretKeyPrivate(): string {
+    return process.env.RECAPTCHA_SECRET_KEY_PRIVATE;
+  }
 }
