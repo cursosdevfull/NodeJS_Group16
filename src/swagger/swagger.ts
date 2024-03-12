@@ -1,6 +1,6 @@
-import { Application } from 'express';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import { Application } from "express";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 const options = {
   explorer: true,
@@ -10,6 +10,15 @@ const options = {
       title: "API Curso NodeJS",
       version: "1.0.0",
       description: "API documentation",
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          in: "header",
+        },
+      },
     },
   },
   apis: ["./src/docs/*.doc.ts"],

@@ -11,7 +11,7 @@ export class AuthLoginDto {
   @MinLength(5)
   password: string;
 
-  @IsNotEmpty()
+  /* @IsNotEmpty()
   @IsString()
-  recaptchaCode: string;
+  recaptchaCode: string; */
 }

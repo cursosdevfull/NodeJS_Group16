@@ -1,9 +1,16 @@
-import { CourseGetAll, CourseGetById, CourseGetByPage, CourseSave } from '@course/application';
-import { CourseRepository } from '@course/domain/repositories/course.repository';
-import { CourseInfrastructure } from '@course/infrastructure/course.infrastructure';
-import { Router } from 'express';
+import { AuthenticationMiddleware } from "@core/middlewares/authentication.middleware";
+import { AuthorizationMiddleware } from "@core/middlewares/authorization.middleware";
+import {
+  CourseGetAll,
+  CourseGetById,
+  CourseGetByPage,
+  CourseSave,
+} from "@course/application";
+import { CourseRepository } from "@course/domain/repositories/course.repository";
+import { CourseInfrastructure } from "@course/infrastructure/course.infrastructure";
+import { Router } from "express";
 
-import { CourseController } from './controller';
+import { CourseController } from "./controller";
 
 export class CourseRoute {
   readonly router: Router;
@@ -14,19 +21,40 @@ export class CourseRoute {
   }
 
   private init() {
-    this.router.post("/", this.controller.create.bind(this.controller));
-    this.router.put("/:courseId", this.controller.update.bind(this.controller));
+    this.router.post(
+      "/",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
+      this.controller.create.bind(this.controller)
+    );
+    this.router.put(
+      "/:courseId",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
+      this.controller.update.bind(this.controller)
+    );
     this.router.delete(
       "/:courseId",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
       this.controller.delete.bind(this.controller)
     );
-    this.router.get("/", this.controller.getAll.bind(this.controller));
+    this.router.get(
+      "/",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
+      this.controller.getAll.bind(this.controller)
+    );
     this.router.get(
       "/:courseId",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
       this.controller.getById.bind(this.controller)
     );
     this.router.get(
       "/page/:page/size/:pageSize",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
       this.controller.getByPage.bind(this.controller)
     );
   }

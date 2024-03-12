@@ -2,6 +2,8 @@
  * @openapi
  * /course:
  *    get:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - Course
  *      summary: Get all courses
@@ -28,12 +30,16 @@
  *                      type: string
  *                      example: published
  *    post:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - Course
  *      summary: Create course
  *
  * /course/{courseId}:
  *    put:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - Course
  *      summary: Update course
@@ -45,6 +51,8 @@
  *         schema:
  *          type: string
  *    delete:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - Course
  *      summary: Delete course
@@ -56,6 +64,8 @@
  *         schema:
  *          type: string
  *    get:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - Course
  *      summary: Get course by ID
@@ -68,6 +78,8 @@
  *          type: string
  * /course/page/{page}/size/{pageSize}:
  *    get:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - Course
  *      summary: Get courses by page

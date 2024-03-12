@@ -24,6 +24,8 @@ export class AuthLogin {
 
     if (!user) throw new Error("User not found");
 
+    if (!user.properties.secret) throw new Error("2FA not enabled");
+
     const password = auth.properties.password;
     const encryptedPassword = user.properties.password;
 
@@ -34,6 +36,6 @@ export class AuthLogin {
 
     if (!isPasswordValid) throw new Error("Invalid password");
 
-    return TokensDto.generateTokens(user);
+    return TokensDto.generateTokens(user, false);
   }
 }

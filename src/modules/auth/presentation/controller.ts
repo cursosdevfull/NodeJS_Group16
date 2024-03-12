@@ -1,22 +1,30 @@
 import { ControllerBase } from "@core/presentation/controller-base";
+import { UserGetById, UserSave } from "@user/application";
+import { User, UserProperties } from "@user/domain/roots/user";
+import { UserCreateDto } from "@user/presentation/dtos/user-create.dto";
 import { Request, Response } from "express";
 
 import { AuthLogin } from "../application/auth-login";
 import { AuthGetNewAccessToken } from "../application/auth-new-access-token";
+import { TokensDto } from "../application/dtos/tokens.dto";
 import { Auth } from "../domain/auth";
 import { AuthLoginDto } from "./dtos/auth-login.dto";
 import { AuthRefreshTokenDto } from "./dtos/auth-refresh-token";
+import { UserService } from "./user.service";
 
 export class AuthController extends ControllerBase {
   constructor(
     private readonly authLogin: AuthLogin,
-    private readonly authGetNewAccessToken: AuthGetNewAccessToken
+    private readonly authGetNewAccessToken: AuthGetNewAccessToken,
+    private readonly userSave: UserSave,
+    private readonly userGetById: UserGetById
   ) {
     super();
   }
 
   async login(req: Request, res: Response) {
-    const { email, password, recaptchaCode } = req.body;
+    const { email, password } = req.body;
+    const recaptchaCode = "";
 
     const errors = await this.validateParameters(AuthLoginDto, req.body);
     if (errors) {
@@ -40,5 +48,66 @@ export class AuthController extends ControllerBase {
       refreshToken
     );
     res.json(valueReturned);
+  }
+
+  async register(req: Request, res: Response) {
+    const { name, lastname, email, password, roles } = req.body;
+
+    const errors = await this.validateParameters(UserCreateDto, req.body);
+    if (errors) {
+      return res.status(400).json(errors);
+    }
+
+    const props: UserProperties = {
+      name,
+      lastname,
+      email,
+      password,
+      roles,
+    };
+
+    const user = new User(props);
+    await this.userSave.execute(user);
+
+    const auth: Auth = new Auth(email, password, "");
+    const tokens = await this.authLogin.execute(auth);
+    const { secret, qrCode } = await UserService.generateQRAndSecret();
+
+    res.json({ ...tokens, secret, qrCode });
+  }
+
+  async enable2fa(req: Request, res: Response) {
+    const { token, secret } = req.body;
+    const userId = res.locals.userId;
+
+    const isValid = UserService.verify2fa(secret, token);
+    if (!!!isValid) return res.status(400).json({ message: "Invalid token" });
+
+    const user = await this.userGetById.execute(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.update({ secret });
+    await this.userSave.execute(user);
+
+    res.status(200).json({ message: "2fa enabled" });
+  }
+
+  async verify2fa(req: Request, res: Response) {
+    const { token } = req.body;
+    const userId = res.locals.userId;
+
+    const user = await this.userGetById.execute(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isValid = UserService.verify2fa(user.properties.secret, token);
+    if (!!!isValid) return res.status(400).json({ message: "Invalid token" });
+
+    const tokens = TokensDto.generateTokens(user);
+
+    res.status(200).json(tokens);
   }
 }

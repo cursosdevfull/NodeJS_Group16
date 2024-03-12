@@ -9,11 +9,17 @@ export interface ITokens {
 }
 
 export class TokensDto {
-  static generateAccessToken(user: User): string {
+  static generateAccessToken(user: User, validate2FA: boolean): string {
     const payload = {
+      id: user.properties.userId,
       name: user.properties.name,
       lastname: user.properties.lastname,
       roles: user.properties.roles,
+      is2FAEnabled: validate2FA
+        ? user.properties.secret
+          ? true
+          : false
+        : false,
     };
 
     return sign(payload, Parameters.jwtConfig.secret, {
@@ -25,8 +31,8 @@ export class TokensDto {
     return uuidv4();
   }
 
-  static generateTokens(user: User): ITokens {
-    const accessToken = this.generateAccessToken(user);
+  static generateTokens(user: User, validate2FA: boolean = true): ITokens {
+    const accessToken = this.generateAccessToken(user, validate2FA);
     const refreshToken = user.properties.refreshToken;
 
     return {

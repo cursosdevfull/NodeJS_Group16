@@ -21,21 +21,40 @@ export class UserRoute {
   }
 
   private init() {
-    this.router.post("/", this.controller.create.bind(this.controller));
-    this.router.put("/:userId", this.controller.update.bind(this.controller));
-    this.router.get("/:userId", this.controller.getById.bind(this.controller));
+    this.router.post(
+      "/",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
+      this.controller.create.bind(this.controller)
+    );
+    this.router.put(
+      "/:userId",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
+      this.controller.update.bind(this.controller)
+    );
+    this.router.get(
+      "/:userId",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
+      this.controller.getById.bind(this.controller)
+    );
     this.router.delete(
       "/:userId",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
       this.controller.delete.bind(this.controller)
     );
     this.router.get(
       "/",
-      AuthenticationMiddleware.execute,
+      AuthenticationMiddleware.execute(),
       AuthorizationMiddleware.execute("ADMIN", "USER"),
       this.controller.getAll.bind(this.controller)
     );
     this.router.get(
       "/page/:page/size/:pageSize",
+      AuthenticationMiddleware.execute(),
+      AuthorizationMiddleware.execute("ADMIN", "USER"),
       this.controller.getByPage.bind(this.controller)
     );
   }

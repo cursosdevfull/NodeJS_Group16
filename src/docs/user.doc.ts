@@ -2,6 +2,8 @@
  * @openapi
  * /user:
  *    get:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - User
  *      summary: Get all users
@@ -28,12 +30,23 @@
  *                      type: string
  *                      example: published
  *    post:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - User
  *      summary: Create user
+ *      requestBody:
+ *        description: Information user required to create
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/User'
  *
  * /user/{userId}:
  *    put:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - User
  *      summary: Update user
@@ -45,6 +58,8 @@
  *         schema:
  *          type: string
  *    delete:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - User
  *      summary: Delete user
@@ -56,6 +71,8 @@
  *         schema:
  *          type: string
  *    get:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - User
  *      summary: Get user by ID
@@ -68,6 +85,8 @@
  *          type: string
  * /user/page/{page}/size/{pageSize}:
  *    get:
+ *      security:
+ *        - bearerAuth: []
  *      tags:
  *        - User
  *      summary: Get users by page
@@ -84,4 +103,46 @@
  *         required: true
  *         schema:
  *          type: number
+ * components:
+ *   schemas:
+ *     User:
+ *      type: object
+ *      properties:
+ *        name:
+ *          type: string
+ *          example: Sergio
+ *        lastname:
+ *          type: string
+ *          example: Hidalgo
+ *        email:
+ *          type: string
+ *          example: sergio@email.com
+ *        password:
+ *          type: string
+ *          example: 12345
+ *        roles:
+ *          type: array
+ *          items:
+ *             $ref: '#/components/schemas/Role'
+ *     Role:
+ *      type: object
+ *      properties:
+ *        roleId:
+ *          type: integer
+ *          example: 1
+ *     Enable2FA:
+ *      type: object
+ *      properties:
+ *        token:
+ *          type: integer
+ *          example: 452578
+ *        secret:
+ *          type: string
+ *          example: secret
+ *     Verify2FA:
+ *      type: object
+ *      properties:
+ *        token:
+ *          type: integer
+ *          example: 452578
  */

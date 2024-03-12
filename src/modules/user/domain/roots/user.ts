@@ -21,7 +21,7 @@ export interface UserOptional {
 
 export type UserProperties = UserRequired & Partial<UserOptional>;
 export type UserPropertiesToUpdate = Partial<
-  Omit<UserRequired, "email"> & Pick<UserOptional, "refreshToken">
+  Omit<UserRequired, "email"> & Pick<UserOptional, "refreshToken" | "secret">
 >;
 
 export class User {
