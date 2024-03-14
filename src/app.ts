@@ -1,11 +1,12 @@
-import { CourseResolver } from "@course/presentation/resolvers/course.resolver";
-import { ApolloServer } from "apollo-server-express";
-import express, { Application, NextFunction, Request, Response } from "express";
-import { buildSchema } from "type-graphql";
+import { CourseResolver } from '@course/presentation/resolvers/course.resolver';
+import { ApolloServer } from 'apollo-server-express';
+import cors from 'cors';
+import express, { Application, NextFunction, Request, Response } from 'express';
+import { buildSchema } from 'type-graphql';
 
-import AuthRouter from "./modules/auth/presentation/routes";
-import CourseRouter from "./modules/course/presentation/routes";
-import UserRouter from "./modules/user/presentation/routes";
+import AuthRouter from './modules/auth/presentation/routes';
+import CourseRouter from './modules/course/presentation/routes';
+import UserRouter from './modules/user/presentation/routes';
 
 class App {
   expressApp: Application;
@@ -19,6 +20,7 @@ class App {
   }
 
   middlewares() {
+    this.expressApp.use(cors());
     this.expressApp.use(express.json());
     this.expressApp.use(
       express.urlencoded({ extended: true /*limit: "200mb"*/ })

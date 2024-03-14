@@ -1,15 +1,16 @@
-import { ControllerBase } from "@core/presentation/controller-base";
-import { UserGetById, UserGetByPage, UserSave } from "@user/application";
-import { User, UserProperties } from "@user/domain/roots/user";
-import { Request, Response } from "express";
+import { ControllerBase } from '@core/presentation/controller-base';
+import { UserGetById, UserGetByPage, UserSave } from '@user/application';
+import { UserService } from '@user/application/user.service';
+import { User, UserProperties } from '@user/domain/roots/user';
+import { Request, Response } from 'express';
 
-import { UserGetAll } from "../application/user-get-all";
-import { UserCreateDto } from "./dtos/user-create.dto";
-import { UserDeleteDto } from "./dtos/user-delete.dto";
-import { UserGetByIdDto } from "./dtos/user-get-by-id.dto";
-import { UserGetByPageDto } from "./dtos/user-get-by-page";
-import { UserResponseDto } from "./dtos/user-response.dto";
-import { UserUpdateDto } from "./dtos/user-update.dto";
+import { UserGetAll } from '../application/user-get-all';
+import { UserCreateDto } from './dtos/user-create.dto';
+import { UserDeleteDto } from './dtos/user-delete.dto';
+import { UserGetByIdDto } from './dtos/user-get-by-id.dto';
+import { UserGetByPageDto } from './dtos/user-get-by-page';
+import { UserResponseDto } from './dtos/user-response.dto';
+import { UserUpdateDto } from './dtos/user-update.dto';
 
 export class UserController extends ControllerBase {
   constructor(
@@ -33,7 +34,7 @@ export class UserController extends ControllerBase {
       name,
       lastname,
       email,
-      password,
+      password: UserService.encryptPassword(password),
       roles,
     };
 

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class AuthLoginDto {
   @IsNotEmpty()
@@ -11,7 +11,7 @@ export class AuthLoginDto {
   @MinLength(5)
   password: string;
 
-  /* @IsNotEmpty()
+  @IsNotEmpty()
   @IsString()
-  recaptchaCode: string; */
+  recaptchaCode: string;
 }

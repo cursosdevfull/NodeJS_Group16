@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-4">
+    <form [formGroup]="fg">
+      <div class="form-floating">
+        <input type="text" class="form-control" formControlName="token" />
+        <label>Token</label>
+      </div>
+
+      <button
+        class="btn btn-primary w-100 py-2"
+        type="button"
+        [disabled]="fg.invalid"
+        (click)="verify2FA()"
+      >
+        Enable 2FA
+      </button>
+    </form>
+  </div>
+</div>

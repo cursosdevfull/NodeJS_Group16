@@ -1,11 +1,5 @@
-import { RoleEntity } from "@role/infrastructure/entities/role.entity";
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { RoleEntity } from '@role/infrastructure/entities/role.entity';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: "user" })
 export class UserEntity {
@@ -21,7 +15,7 @@ export class UserEntity {
   @Column({ type: "varchar", length: 255 })
   email: string;
 
-  @Column({ type: "varchar", length: 255 })
+  @Column({ type: "varchar", length: 100 })
   password: string;
 
   @Column({ type: "varchar", length: 255 })

@@ -1,16 +1,17 @@
-import { ControllerBase } from "@core/presentation/controller-base";
-import { UserGetById, UserSave } from "@user/application";
-import { User, UserProperties } from "@user/domain/roots/user";
-import { UserCreateDto } from "@user/presentation/dtos/user-create.dto";
-import { Request, Response } from "express";
+import { ControllerBase } from '@core/presentation/controller-base';
+import { UserGetById, UserSave } from '@user/application';
+import { UserService } from '@user/application/user.service';
+import { User, UserProperties } from '@user/domain/roots/user';
+import { UserCreateDto } from '@user/presentation/dtos/user-create.dto';
+import { Request, Response } from 'express';
 
-import { AuthLogin } from "../application/auth-login";
-import { AuthGetNewAccessToken } from "../application/auth-new-access-token";
-import { TokensDto } from "../application/dtos/tokens.dto";
-import { Auth } from "../domain/auth";
-import { AuthLoginDto } from "./dtos/auth-login.dto";
-import { AuthRefreshTokenDto } from "./dtos/auth-refresh-token";
-import { UserService } from "./user.service";
+import { AuthLogin } from '../application/auth-login';
+import { AuthGetNewAccessToken } from '../application/auth-new-access-token';
+import { TokensDto } from '../application/dtos/tokens.dto';
+import { Auth } from '../domain/auth';
+import { AuthLoginDto } from './dtos/auth-login.dto';
+import { AuthRefreshTokenDto } from './dtos/auth-refresh-token';
+import { UserService as service } from './user.service';
 
 export class AuthController extends ControllerBase {
   constructor(
@@ -23,13 +24,15 @@ export class AuthController extends ControllerBase {
   }
 
   async login(req: Request, res: Response) {
-    const { email, password } = req.body;
-    const recaptchaCode = "";
+    const { email, password, recaptchaCode } = req.body;
+    //const recaptchaCode = "";
 
     const errors = await this.validateParameters(AuthLoginDto, req.body);
     if (errors) {
       return res.status(400).json(errors);
     }
+
+    console.log("body", req.body);
 
     const auth: Auth = new Auth(email, password, recaptchaCode);
     const valueReturned = await this.authLogin.execute(auth);
@@ -62,7 +65,7 @@ export class AuthController extends ControllerBase {
       name,
       lastname,
       email,
-      password,
+      password: UserService.encryptPassword(password),
       roles,
     };
 
@@ -70,8 +73,8 @@ export class AuthController extends ControllerBase {
     await this.userSave.execute(user);
 
     const auth: Auth = new Auth(email, password, "");
-    const tokens = await this.authLogin.execute(auth);
-    const { secret, qrCode } = await UserService.generateQRAndSecret();
+    const tokens = await this.authLogin.execute(auth, true, true);
+    const { secret, qrCode } = await service.generateQRAndSecret();
 
     res.json({ ...tokens, secret, qrCode });
   }
@@ -80,7 +83,7 @@ export class AuthController extends ControllerBase {
     const { token, secret } = req.body;
     const userId = res.locals.userId;
 
-    const isValid = UserService.verify2fa(secret, token);
+    const isValid = service.verify2fa(secret, token);
     if (!!!isValid) return res.status(400).json({ message: "Invalid token" });
 
     const user = await this.userGetById.execute(userId);
@@ -103,7 +106,7 @@ export class AuthController extends ControllerBase {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const isValid = UserService.verify2fa(user.properties.secret, token);
+    const isValid = service.verify2fa(user.properties.secret, token);
     if (!!!isValid) return res.status(400).json({ message: "Invalid token" });
 
     const tokens = TokensDto.generateTokens(user);
