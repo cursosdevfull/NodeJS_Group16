@@ -48,13 +48,5 @@ export class TokensDto {
         return resolve(decoded);
       });
     });
-    /*     try {
-      const result = verify(token, Parameters.jwtConfig.secret);
-      console.log(result);
-      return result;
-    } catch (error) {
-      console.log(error);
-      return null;
-    } */
   }
 }

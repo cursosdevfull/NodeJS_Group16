@@ -1,9 +1,9 @@
-import { TYPES } from "@container";
+import { IError } from "@core/interfaces/ierror.interface";
 import { ControllerBase } from "@core/presentation/controller-base";
 import { UserGetById, UserGetByPage, UserSave } from "@user/application";
 import { UserService } from "@user/application/user.service";
 import { User, UserProperties } from "@user/domain/roots/user";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 
 import { UserGetAll } from "../application/user-get-all";
@@ -17,10 +17,10 @@ import { UserUpdateDto } from "./dtos/user-update.dto";
 @injectable()
 export class UserController extends ControllerBase {
   constructor(
-    @inject(TYPES.UserSave) private readonly userSave: UserSave,
-    @inject(TYPES.UserGetById) private readonly userGetById: UserGetById,
-    @inject(TYPES.UserGetAll) private readonly userGetAll: UserGetAll,
-    @inject(TYPES.UserGetByPage) private readonly userGetByPage: UserGetByPage
+    @inject("UserSave") private readonly userSave: UserSave,
+    @inject("UserGetById") private readonly userGetById: UserGetById,
+    @inject("UserGetAll") private readonly userGetAll: UserGetAll,
+    @inject("UserGetByPage") private readonly userGetByPage: UserGetByPage
   ) {
     super();
   }
@@ -46,7 +46,7 @@ export class UserController extends ControllerBase {
     res.json(valueReturned);
   }
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
     const body = req.body;
 
@@ -58,27 +58,41 @@ export class UserController extends ControllerBase {
       return res.status(400).json(errors);
     }
 
-    const user = await this.userGetById.execute(+userId);
+    const userResult = await this.userGetById.execute(+userId);
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    const user = userResult.value;
+
     user.update(body);
     const valueReturned = await this.userSave.execute(user);
     res.json(valueReturned);
   }
 
-  async getById(req: Request, res: Response) {
+  async getById(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
 
     const errors = await this.validateParameters(UserGetByIdDto, {
       userId,
     });
     if (errors) {
-      return res.status(400).json(errors);
+      const objError: IError = new Error("Invalid parameters");
+      objError.status = 411;
+      objError.stack = JSON.stringify(errors);
+      return next(objError);
     }
 
-    const user = await this.userGetById.execute(+userId);
+    const userResult = await this.userGetById.execute(+userId);
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    const user = userResult.value;
     res.json(UserResponseDto.fromDomainToResponse(user));
   }
 
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
 
     const errors = await this.validateParameters(UserDeleteDto, {
@@ -88,18 +102,33 @@ export class UserController extends ControllerBase {
       return res.status(400).json(errors);
     }
 
-    const user = await this.userGetById.execute(+userId);
+    const userResult = await this.userGetById.execute(+userId);
+    if (userResult.isErr()) {
+      return next(userResult.error);
+    }
+
+    const user = userResult.value;
     user.delete();
-    const valueReturned = await this.userSave.execute(user);
-    res.json(valueReturned);
+    const valueResult = await this.userSave.execute(user);
+    if (valueResult.isErr()) {
+      return next(valueResult.error);
+    }
+
+    res.json(valueResult.value);
   }
 
-  async getAll(req: Request, res: Response) {
-    const users = await this.userGetAll.execute();
+  async getAll(req: Request, res: Response, next: NextFunction) {
+    const usersResult = await this.userGetAll.execute();
+    if (usersResult.isErr()) {
+      return next(usersResult.error);
+    }
+
+    const users = usersResult.value;
+
     res.json(UserResponseDto.fromDomainToResponse(users));
   }
 
-  async getByPage(req: Request, res: Response) {
+  async getByPage(req: Request, res: Response, next: NextFunction) {
     const { page, pageSize } = req.params;
 
     const errors = await this.validateParameters(UserGetByPageDto, {
@@ -107,13 +136,23 @@ export class UserController extends ControllerBase {
       pageSize: Number(pageSize),
     });
     if (errors) {
-      return res.status(400).json(errors);
+      const objError: IError = new Error("Invalid parameters");
+      objError.status = 411;
+      objError.stack = JSON.stringify(errors);
+      return next(objError);
     }
 
-    const users = await this.userGetByPage.execute(
+    const usersResult = await this.userGetByPage.execute(
       parseInt(page),
       parseInt(pageSize)
     );
+
+    if (usersResult.isErr()) {
+      return next(usersResult.error);
+    }
+
+    const users = usersResult.value;
+
     res.json(UserResponseDto.fromDomainToResponse(users));
   }
 }

@@ -103,46 +103,4 @@
  *         required: true
  *         schema:
  *          type: number
- * components:
- *   schemas:
- *     User:
- *      type: object
- *      properties:
- *        name:
- *          type: string
- *          example: Sergio
- *        lastname:
- *          type: string
- *          example: Hidalgo
- *        email:
- *          type: string
- *          example: sergio@email.com
- *        password:
- *          type: string
- *          example: 12345
- *        roles:
- *          type: array
- *          items:
- *             $ref: '#/components/schemas/Role'
- *     Role:
- *      type: object
- *      properties:
- *        roleId:
- *          type: integer
- *          example: 1
- *     Enable2FA:
- *      type: object
- *      properties:
- *        token:
- *          type: integer
- *          example: 452578
- *        secret:
- *          type: string
- *          example: secret
- *     Verify2FA:
- *      type: object
- *      properties:
- *        token:
- *          type: integer
- *          example: 452578
  */

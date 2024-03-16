@@ -1,3 +1,4 @@
+import { IError } from "@core/interfaces/ierror.interface";
 import { NextFunction, Request, Response } from "express";
 
 import { TokensDto } from "../../auth/application/dtos/tokens.dto";
@@ -7,14 +8,16 @@ export class AuthenticationMiddleware {
     return (req: Request, res: Response, next: NextFunction) => {
       const { authorization } = req.headers;
 
-      if (!authorization)
-        return res.status(401).json({ message: "Unauthorized" });
-
-      if (authorization.split(" ")[0] !== "Bearer")
-        return res.status(401).json({ message: "Unauthorized" });
-
-      if (!authorization.split(" ")[1])
-        return res.status(401).json({ message: "Unauthorized" });
+      if (
+        !authorization ||
+        authorization.split(" ")[0] !== "Bearer" ||
+        !authorization.split(" ")[1]
+      ) {
+        const objError: IError = new Error("Unauthorized");
+        objError.status = 401;
+        objError.stack = "Unauthorized";
+        return next(objError);
+      }
 
       TokensDto.verifyToken(authorization.split(" ")[1])
         .then((result: any) => {
@@ -26,9 +29,15 @@ export class AuthenticationMiddleware {
         })
         .catch((error) => {
           if (error.message === "jwt expired") {
-            return res.status(403).json({ message: "token expired" });
+            const objError: IError = new Error("Forbidden");
+            objError.status = 403;
+            objError.stack = "Token expired";
+            return next(objError);
           } else {
-            return res.status(401).json({ message: "Unauthorized" });
+            const objError: IError = new Error("Unauthorized");
+            objError.status = 401;
+            objError.stack = "Unauthorized";
+            return next(objError);
           }
         });
     };

@@ -1,4 +1,4 @@
-import { container, TYPES } from "@container";
+import { container } from "@container";
 import { AuthenticationMiddleware } from "@core/middlewares/authentication.middleware";
 import { AuthorizationMiddleware } from "@core/middlewares/authorization.middleware";
 import { Router } from "express";
@@ -67,6 +67,6 @@ const controller = new UserController(
   userGetByPage
 ); */
 
-const controller = container.get<UserController>(TYPES.UserController);
+const controller = container.get<UserController>("UserController");
 
 export default new UserRoute(controller).router;

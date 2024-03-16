@@ -2,7 +2,6 @@ import { Application } from "express";
 import http from "http";
 
 import { Parameters } from "../modules/core/parameters";
-import { swaggerDocs as SwaggerDocs } from "../swagger/swagger";
 import { IBootstrap, TInitialize } from "./bootstrap.interface";
 
 export class ServerBootstrap implements IBootstrap {
@@ -18,7 +17,6 @@ export class ServerBootstrap implements IBootstrap {
         .listen(port)
         .on("listening", () => {
           console.log(`Server is listening on port ${port}`);
-          SwaggerDocs(this.app, port);
           resolve(true);
         })
         .on("error", (err) => {

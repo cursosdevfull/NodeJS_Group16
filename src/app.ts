@@ -1,20 +1,31 @@
-import { CourseResolver } from '@course/presentation/resolvers/course.resolver';
-import { ApolloServer } from 'apollo-server-express';
-import cors from 'cors';
-import express, { Application, NextFunction, Request, Response } from 'express';
-import { buildSchema } from 'type-graphql';
+import {
+  HandlerErrorGeneral,
+  HandlerErrorNotFound,
+} from "@core/handle-errors/errors";
+import { Parameters } from "@core/parameters";
+import { CourseResolver } from "@course/presentation/resolvers/course.resolver";
+import { ApolloServer } from "apollo-server-express";
+import cors from "cors";
+import express, { Application } from "express";
+import { buildSchema } from "type-graphql";
 
-import AuthRouter from './modules/auth/presentation/routes';
-import CourseRouter from './modules/course/presentation/routes';
-import UserRouter from './modules/user/presentation/routes';
+import AuthRouter from "./modules/auth/presentation/routes";
+import CourseRouter from "./modules/course/presentation/routes";
+import UserRouter from "./modules/user/presentation/routes";
+import { swaggerDocs as SwaggerDocs } from "./swagger/swagger";
 
 class App {
   expressApp: Application;
 
   constructor() {
     this.expressApp = express();
+    this.init();
+  }
+
+  async init() {
     this.middlewares();
-    this.mountGraphQL();
+    await this.mountGraphQL();
+    this.mountSwagger();
     this.mountRoutes();
     this.mountErrorHandlers();
   }
@@ -24,7 +35,11 @@ class App {
     this.expressApp.use(express.json());
     this.expressApp.use(
       express.urlencoded({ extended: true /*limit: "200mb"*/ })
-    ); // querystring, qs
+    );
+  }
+
+  mountSwagger() {
+    SwaggerDocs(this.expressApp, Parameters.port);
   }
 
   async mountGraphQL() {
@@ -47,12 +62,8 @@ class App {
   }
 
   mountErrorHandlers() {
-    this.expressApp.use(
-      "**",
-      (err: Error, req: Request, res: Response, next: NextFunction) => {
-        res.status(404).send("Path not found");
-      }
-    );
+    this.expressApp.use(HandlerErrorNotFound);
+    this.expressApp.use(HandlerErrorGeneral);
   }
 }
 

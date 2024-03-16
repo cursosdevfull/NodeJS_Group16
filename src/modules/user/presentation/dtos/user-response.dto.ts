@@ -31,8 +31,6 @@ export class UserResponseDto {
       ) as UserResponse[];
     }
 
-    console.log(entity.properties);
-
     return plainToInstance(UserResponse, entity.properties, {
       strategy: "excludeAll",
     });

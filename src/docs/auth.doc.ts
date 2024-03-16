@@ -26,6 +26,18 @@
  *                  refreshToken:
  *                    type: string
  *                    example: 1110ca7b-8e2b-4f88-a80d-c0dbc693101c
+ *        411:
+ *         description: Error parameters input
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorInputParameters'
+ *        500:
+ *         description: Error server
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorServer'
  * /auth/register:
  *    post:
  *      tags:
@@ -58,6 +70,18 @@
  *                  qrCode:
  *                    type: string
  *                    example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...
+ *        411:
+ *         description: Error parameters input
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorInputParameters'
+ *        500:
+ *         description: Error server
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorServer'
  * /auth/get-new-access-token:
  *    post:
  *      tags:
@@ -84,23 +108,24 @@
  *                  refreshToken:
  *                    type: string
  *                    example: 1110ca7b-8e2b-4f88-a80d-c0dbc693101c
- * components:
- *   schemas:
- *     Auth:
- *      type: object
- *      properties:
- *        email:
- *          type: string
- *          example: sergio@email.com
- *        password:
- *          type: string
- *          example: 12345
- *     AuthGetNewAccessToken:
- *      type: object
- *      properties:
- *        refreshToken:
- *          type: string
- *          example: b7212b5c-c7e0-4f8f-9be1-8295a4545630
+ *        404:
+ *         description: Error not found
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorNotFound'
+ *        411:
+ *         description: Error parameters input
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorInputParameters'
+ *        500:
+ *         description: Error server
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorServer'
  * /auth/enable-2fa:
  *    post:
  *      security:
@@ -129,6 +154,30 @@
  *                  refreshToken:
  *                    type: string
  *                    example: 1110ca7b-8e2b-4f88-a80d-c0dbc693101c
+ *        401:
+ *         description: Error unauthorized
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorNotAuthorized'
+ *        403:
+ *         description: Error forbidden
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorForbidden'
+ *        411:
+ *         description: Error parameters input
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorInputParameters'
+ *        500:
+ *         description: Error server
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorServer'
  * /auth/verify-2fa:
  *    post:
  *      security:
@@ -157,4 +206,16 @@
  *                  refreshToken:
  *                    type: string
  *                    example: 1110ca7b-8e2b-4f88-a80d-c0dbc693101c
+ *        411:
+ *         description: Error parameters input
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorInputParameters'
+ *        500:
+ *         description: Error server
+ *         content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/ErrorServer'
  */

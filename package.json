@@ -45,6 +45,7 @@
     "inversify": "^6.0.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.2",
+    "neverthrow": "^6.1.0",
     "qrcode": "^1.5.3",
     "reflect-metadata": "^0.2.1",
     "speakeasy": "^2.0.0",

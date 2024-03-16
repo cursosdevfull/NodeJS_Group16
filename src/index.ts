@@ -22,7 +22,7 @@ dotenv.config();
     await Promise.all(listPromise);
     console.log("Server and database are running");
   } catch (err) {
-    console.error("Error happened 2", err);
+    console.error("Error happened", err);
     database.close();
     process.exit(1);
   }

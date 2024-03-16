@@ -23,31 +23,27 @@ import { UserInfrastructure } from "@user/infrastructure/user.infrastructure";
 import { UserController } from "@user/presentation/controller";
 import { Container } from "inversify";
 
-import { TYPES } from "./types";
-
 const container = new Container();
 
-container.bind<UserRepository>(TYPES.UserRepository).to(UserInfrastructure);
-container.bind<UserGetAll>(TYPES.UserGetAll).to(UserGetAll);
-container.bind<UserGetById>(TYPES.UserGetById).to(UserGetById);
-container.bind<UserGetByPage>(TYPES.UserGetByPage).to(UserGetByPage);
-container.bind<UserSave>(TYPES.UserSave).to(UserSave);
-container.bind<UserController>(TYPES.UserController).to(UserController);
+container.bind<UserRepository>("UserRepository").to(UserInfrastructure);
+container.bind<UserGetAll>("UserGetAll").to(UserGetAll);
+container.bind<UserGetById>("UserGetById").to(UserGetById);
+container.bind<UserGetByPage>("UserGetByPage").to(UserGetByPage);
+container.bind<UserSave>("UserSave").to(UserSave);
+container.bind<UserController>("UserController").to(UserController);
 
-container.bind<AuthRepository>(TYPES.AuthRepository).to(AuthInfrastructure);
-container.bind<AuthLogin>(TYPES.AuthLogin).to(AuthLogin);
+container.bind<AuthRepository>("AuthRepository").to(AuthInfrastructure);
+container.bind<AuthLogin>("AuthLogin").to(AuthLogin);
 container
-  .bind<AuthGetNewAccessToken>(TYPES.AuthGetNewAccessToken)
+  .bind<AuthGetNewAccessToken>("AuthGetNewAccessToken")
   .to(AuthGetNewAccessToken);
-container.bind<AuthController>(TYPES.AuthController).to(AuthController);
+container.bind<AuthController>("AuthController").to(AuthController);
 
-container
-  .bind<CourseRepository>(TYPES.CourseRepository)
-  .to(CourseInfrastructure);
-container.bind<CourseGetAll>(TYPES.CourseGetAll).to(CourseGetAll);
-container.bind<CourseGetById>(TYPES.CourseGetById).to(CourseGetById);
-container.bind<CourseGetByPage>(TYPES.CourseGetByPage).to(CourseGetByPage);
-container.bind<CourseSave>(TYPES.CourseSave).to(CourseSave);
-container.bind<CourseController>(TYPES.CourseController).to(CourseController);
+container.bind<CourseRepository>("CourseRepository").to(CourseInfrastructure);
+container.bind<CourseGetAll>("CourseGetAll").to(CourseGetAll);
+container.bind<CourseGetById>("CourseGetById").to(CourseGetById);
+container.bind<CourseGetByPage>("CourseGetByPage").to(CourseGetByPage);
+container.bind<CourseSave>("CourseSave").to(CourseSave);
+container.bind<CourseController>("CourseController").to(CourseController);
 
 export { container };

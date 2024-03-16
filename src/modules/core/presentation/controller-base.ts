@@ -1,5 +1,7 @@
 import { ValidateService } from "@core/services/validate.service";
+import { injectable } from "inversify";
 
+@injectable()
 export abstract class ControllerBase {
   async validateParameters<T extends object>(
     constructor: { new (): T },
@@ -7,7 +9,6 @@ export abstract class ControllerBase {
   ) {
     const dtoRequest = new constructor();
     Object.assign(dtoRequest, data);
-    console.log("dtoRequest", dtoRequest);
 
     return await ValidateService.validate(dtoRequest);
   }

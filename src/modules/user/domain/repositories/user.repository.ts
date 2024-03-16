@@ -1,10 +1,19 @@
+import {
+  TResultGetAll,
+  TResultGetByEmail,
+  TResultGetById,
+  TResultGetByPage,
+  TResultGetByRefreshToken,
+  TResultSave,
+} from "@user/infrastructure/user.infrastructure";
+
 import { User } from "../roots/user";
 
 export interface UserRepository {
-  save(user: User): Promise<void>;
-  getAll(): Promise<User[]>;
-  getById(userId: number): Promise<User>;
-  getByEmail(email: string): Promise<User>;
-  getByRefreshToken(refreshToken: string): Promise<User>;
-  getByPage(page: number, pageSize: number): Promise<User[]>;
+  save(user: User): Promise<TResultSave>;
+  getAll(): Promise<TResultGetAll>;
+  getById(userId: number): Promise<TResultGetById>;
+  getByEmail(email: string): Promise<TResultGetByEmail>;
+  getByRefreshToken(refreshToken: string): Promise<TResultGetByRefreshToken>;
+  getByPage(page: number, pageSize: number): Promise<TResultGetByPage>;
 }

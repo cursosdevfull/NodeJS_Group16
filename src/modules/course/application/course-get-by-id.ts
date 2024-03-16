@@ -1,4 +1,3 @@
-import { TYPES } from "@container";
 import { Course } from "@course/domain/course";
 import { CourseRepository } from "@course/domain/repositories/course.repository";
 import { inject, injectable } from "inversify";
@@ -6,7 +5,7 @@ import { inject, injectable } from "inversify";
 @injectable()
 export class CourseGetById {
   constructor(
-    @inject(TYPES.CourseRepository)
+    @inject("CourseRepository")
     private readonly repository: CourseRepository
   ) {}
 

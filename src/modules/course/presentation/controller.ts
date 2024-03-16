@@ -1,30 +1,24 @@
-import { TYPES } from "@container";
-import { ControllerBase } from "@core/presentation/controller-base";
-import {
-  CourseGetAll,
-  CourseGetById,
-  CourseGetByPage,
-  CourseSave,
-} from "@course/application";
-import { Course, CourseProperties } from "@course/domain/course";
-import { Request, Response } from "express";
-import { inject, injectable } from "inversify";
-import { v4 as uuidv4 } from "uuid";
+import { ControllerBase } from '@core/presentation/controller-base';
+import { CourseGetAll, CourseGetById, CourseGetByPage, CourseSave } from '@course/application';
+import { Course, CourseProperties } from '@course/domain/course';
+import { Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
+import { v4 as uuidv4 } from 'uuid';
 
-import { CourseCreateDto } from "./dtos/course-create.dto";
-import { CourseDeleteDto } from "./dtos/course-delete.dto";
-import { CourseGetByIdDto } from "./dtos/course-get-by-id";
-import { CourseGetByPageDto } from "./dtos/course-get-by-page";
-import { CourseResponseDto } from "./dtos/course-response.dto";
-import { CourseUpdateDto } from "./dtos/course-update.dto";
+import { CourseCreateDto } from './dtos/course-create.dto';
+import { CourseDeleteDto } from './dtos/course-delete.dto';
+import { CourseGetByIdDto } from './dtos/course-get-by-id';
+import { CourseGetByPageDto } from './dtos/course-get-by-page';
+import { CourseResponseDto } from './dtos/course-response.dto';
+import { CourseUpdateDto } from './dtos/course-update.dto';
 
 @injectable()
 export class CourseController extends ControllerBase {
   constructor(
-    @inject(TYPES.CourseSave) private readonly courseSave: CourseSave,
-    @inject(TYPES.CourseGetAll) private readonly courseGetAll: CourseGetAll,
-    @inject(TYPES.CourseGetById) private readonly courseGetById: CourseGetById,
-    @inject(TYPES.CourseGetByPage)
+    @inject("CourseSave") private readonly courseSave: CourseSave,
+    @inject("CourseGetAll") private readonly courseGetAll: CourseGetAll,
+    @inject("CourseGetById") private readonly courseGetById: CourseGetById,
+    @inject("CourseGetByPage")
     private readonly courseGetByPage: CourseGetByPage
   ) {
     super();

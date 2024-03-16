@@ -1,4 +1,4 @@
-import { container, TYPES } from "@container";
+import { container } from "@container";
 import { Router } from "express";
 
 import { AuthenticationMiddleware } from "../../core/middlewares/authentication.middleware";
@@ -49,6 +49,6 @@ const controller = new AuthController(
   userSave,
   userGetById
 ); */
-const controller = container.get<AuthController>(TYPES.AuthController);
+const controller = container.get<AuthController>("AuthController");
 
 export default new AuthRoute(controller).router;

@@ -1,10 +1,10 @@
-import { TYPES } from "@container";
+import { IError } from "@core/interfaces/ierror.interface";
 import { ControllerBase } from "@core/presentation/controller-base";
 import { UserGetById, UserSave } from "@user/application";
 import { UserService } from "@user/application/user.service";
 import { User, UserProperties } from "@user/domain/roots/user";
 import { UserCreateDto } from "@user/presentation/dtos/user-create.dto";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 
 import { AuthLogin } from "../application/auth-login";
@@ -18,40 +18,56 @@ import { UserService as service } from "./user.service";
 @injectable()
 export class AuthController extends ControllerBase {
   constructor(
-    @inject(TYPES.AuthLogin) private readonly authLogin: AuthLogin,
-    @inject(TYPES.AuthGetNewAccessToken)
+    @inject("AuthLogin") private readonly authLogin: AuthLogin,
+    @inject("AuthGetNewAccessToken")
     private readonly authGetNewAccessToken: AuthGetNewAccessToken,
-    @inject(TYPES.UserSave) private readonly userSave: UserSave,
-    @inject(TYPES.UserGetById) private readonly userGetById: UserGetById
+    @inject("UserSave") private readonly userSave: UserSave,
+    @inject("UserGetById") private readonly userGetById: UserGetById
   ) {
     super();
   }
 
-  async login(req: Request, res: Response) {
+  async login(req: Request, res: Response, next: NextFunction) {
     const { email, password, recaptchaCode } = req.body;
 
     const errors = await this.validateParameters(AuthLoginDto, req.body);
     if (errors) {
-      return res.status(400).json(errors);
+      const error: IError = new Error("Invalid parameters");
+      error.status = 411;
+      error.stack = JSON.stringify(errors);
+      return next(error);
     }
 
     const auth: Auth = new Auth(email, password, recaptchaCode);
-    const valueReturned = await this.authLogin.execute(auth);
-    res.json(valueReturned);
+    const valueResulted = await this.authLogin.execute(auth);
+
+    if (valueResulted.isErr()) {
+      return next(valueResulted.error);
+    }
+
+    res.json(valueResulted.value);
   }
 
-  async getNewAccessToken(req: Request, res: Response) {
+  async getNewAccessToken(req: Request, res: Response, next: NextFunction) {
     const { refreshToken } = req.body;
 
     const errors = await this.validateParameters(AuthRefreshTokenDto, req.body);
     if (errors) {
-      return res.status(400).json(errors);
+      const error: IError = new Error("Invalid parameters");
+      error.status = 400;
+      error.stack = JSON.stringify(errors);
+      return next(error);
     }
 
     const valueReturned = await this.authGetNewAccessToken.execute(
       refreshToken
     );
-    res.json(valueReturned);
+
+    if (valueReturned.isErr()) {
+      return next(valueReturned.error);
+    }
+
+    res.json(valueReturned.value);
   }
 
   async register(req: Request, res: Response) {
@@ -80,17 +96,19 @@ export class AuthController extends ControllerBase {
     res.json({ ...tokens, secret, qrCode });
   }
 
-  async enable2fa(req: Request, res: Response) {
+  async enable2fa(req: Request, res: Response, next: NextFunction) {
     const { token, secret } = req.body;
     const userId = res.locals.userId;
 
     const isValid = service.verify2fa(secret, token);
     if (!!!isValid) return res.status(400).json({ message: "Invalid token" });
 
-    const user = await this.userGetById.execute(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    const userResult = await this.userGetById.execute(userId);
+    if (userResult.isErr()) {
+      return next(userResult.error);
     }
+
+    const user = userResult.value;
 
     user.update({ secret });
     await this.userSave.execute(user);
@@ -98,17 +116,23 @@ export class AuthController extends ControllerBase {
     res.status(200).json({ message: "2fa enabled" });
   }
 
-  async verify2fa(req: Request, res: Response) {
+  async verify2fa(req: Request, res: Response, next: NextFunction) {
     const { token } = req.body;
     const userId = res.locals.userId;
 
-    const user = await this.userGetById.execute(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    const userResult = await this.userGetById.execute(userId);
+    if (userResult.isErr()) {
+      return next(userResult.error);
     }
 
+    const user = userResult.value;
+
     const isValid = service.verify2fa(user.properties.secret, token);
-    if (!!!isValid) return res.status(400).json({ message: "Invalid token" });
+    if (!!!isValid) {
+      const objError: IError = new Error("Invalid token");
+      objError.status = 411;
+      return next(objError);
+    }
 
     const tokens = TokensDto.generateTokens(user);
 
