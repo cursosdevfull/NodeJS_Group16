@@ -1,38 +1,39 @@
-import { ControllerBase } from '@core/presentation/controller-base';
-import { UserGetById, UserSave } from '@user/application';
-import { UserService } from '@user/application/user.service';
-import { User, UserProperties } from '@user/domain/roots/user';
-import { UserCreateDto } from '@user/presentation/dtos/user-create.dto';
-import { Request, Response } from 'express';
+import { TYPES } from "@container";
+import { ControllerBase } from "@core/presentation/controller-base";
+import { UserGetById, UserSave } from "@user/application";
+import { UserService } from "@user/application/user.service";
+import { User, UserProperties } from "@user/domain/roots/user";
+import { UserCreateDto } from "@user/presentation/dtos/user-create.dto";
+import { Request, Response } from "express";
+import { inject, injectable } from "inversify";
 
-import { AuthLogin } from '../application/auth-login';
-import { AuthGetNewAccessToken } from '../application/auth-new-access-token';
-import { TokensDto } from '../application/dtos/tokens.dto';
-import { Auth } from '../domain/auth';
-import { AuthLoginDto } from './dtos/auth-login.dto';
-import { AuthRefreshTokenDto } from './dtos/auth-refresh-token';
-import { UserService as service } from './user.service';
+import { AuthLogin } from "../application/auth-login";
+import { AuthGetNewAccessToken } from "../application/auth-new-access-token";
+import { TokensDto } from "../application/dtos/tokens.dto";
+import { Auth } from "../domain/auth";
+import { AuthLoginDto } from "./dtos/auth-login.dto";
+import { AuthRefreshTokenDto } from "./dtos/auth-refresh-token";
+import { UserService as service } from "./user.service";
 
+@injectable()
 export class AuthController extends ControllerBase {
   constructor(
-    private readonly authLogin: AuthLogin,
+    @inject(TYPES.AuthLogin) private readonly authLogin: AuthLogin,
+    @inject(TYPES.AuthGetNewAccessToken)
     private readonly authGetNewAccessToken: AuthGetNewAccessToken,
-    private readonly userSave: UserSave,
-    private readonly userGetById: UserGetById
+    @inject(TYPES.UserSave) private readonly userSave: UserSave,
+    @inject(TYPES.UserGetById) private readonly userGetById: UserGetById
   ) {
     super();
   }
 
   async login(req: Request, res: Response) {
     const { email, password, recaptchaCode } = req.body;
-    //const recaptchaCode = "";
 
     const errors = await this.validateParameters(AuthLoginDto, req.body);
     if (errors) {
       return res.status(400).json(errors);
     }
-
-    console.log("body", req.body);
 
     const auth: Auth = new Auth(email, password, recaptchaCode);
     const valueReturned = await this.authLogin.execute(auth);

@@ -5,7 +5,9 @@
       "@core/*": ["src/modules/core/*"],
       "@course/*": ["src/modules/course/*"],
       "@user/*": ["src/modules/user/*"],
-      "@role/*": ["src/modules/role/*"]
+      "@role/*": ["src/modules/role/*"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@container": ["src/container/index.ts"]
     }
   }
 }

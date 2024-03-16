@@ -1,13 +1,7 @@
-import { UserGetById, UserSave } from "@user/application";
-import { UserRepository } from "@user/domain/repositories/user.repository";
-import { UserInfrastructure } from "@user/infrastructure/user.infrastructure";
+import { container, TYPES } from "@container";
 import { Router } from "express";
 
 import { AuthenticationMiddleware } from "../../core/middlewares/authentication.middleware";
-import { AuthLogin } from "../application/auth-login";
-import { AuthGetNewAccessToken } from "../application/auth-new-access-token";
-import { AuthRepository } from "../domain/repositories/auth.repository";
-import { AuthInfrastructure } from "../infrastructure/auth.infrastructure";
 import { AuthController } from "./controller";
 
 export class AuthRoute {
@@ -41,7 +35,7 @@ export class AuthRoute {
   }
 }
 
-const userRepository: UserRepository = new UserInfrastructure();
+/* const userRepository: UserRepository = new UserInfrastructure();
 const authRepository: AuthRepository = new AuthInfrastructure();
 
 const authLogin = new AuthLogin(userRepository, authRepository);
@@ -54,6 +48,7 @@ const controller = new AuthController(
   authGetNewAccessToken,
   userSave,
   userGetById
-);
+); */
+const controller = container.get<AuthController>(TYPES.AuthController);
 
 export default new AuthRoute(controller).router;

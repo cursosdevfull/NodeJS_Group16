@@ -1,23 +1,26 @@
-import { ControllerBase } from '@core/presentation/controller-base';
-import { UserGetById, UserGetByPage, UserSave } from '@user/application';
-import { UserService } from '@user/application/user.service';
-import { User, UserProperties } from '@user/domain/roots/user';
-import { Request, Response } from 'express';
+import { TYPES } from "@container";
+import { ControllerBase } from "@core/presentation/controller-base";
+import { UserGetById, UserGetByPage, UserSave } from "@user/application";
+import { UserService } from "@user/application/user.service";
+import { User, UserProperties } from "@user/domain/roots/user";
+import { Request, Response } from "express";
+import { inject, injectable } from "inversify";
 
-import { UserGetAll } from '../application/user-get-all';
-import { UserCreateDto } from './dtos/user-create.dto';
-import { UserDeleteDto } from './dtos/user-delete.dto';
-import { UserGetByIdDto } from './dtos/user-get-by-id.dto';
-import { UserGetByPageDto } from './dtos/user-get-by-page';
-import { UserResponseDto } from './dtos/user-response.dto';
-import { UserUpdateDto } from './dtos/user-update.dto';
+import { UserGetAll } from "../application/user-get-all";
+import { UserCreateDto } from "./dtos/user-create.dto";
+import { UserDeleteDto } from "./dtos/user-delete.dto";
+import { UserGetByIdDto } from "./dtos/user-get-by-id.dto";
+import { UserGetByPageDto } from "./dtos/user-get-by-page";
+import { UserResponseDto } from "./dtos/user-response.dto";
+import { UserUpdateDto } from "./dtos/user-update.dto";
 
+@injectable()
 export class UserController extends ControllerBase {
   constructor(
-    private readonly userSave: UserSave,
-    private readonly userGetById: UserGetById,
-    private readonly userGetAll: UserGetAll,
-    private readonly userGetByPage: UserGetByPage
+    @inject(TYPES.UserSave) private readonly userSave: UserSave,
+    @inject(TYPES.UserGetById) private readonly userGetById: UserGetById,
+    @inject(TYPES.UserGetAll) private readonly userGetAll: UserGetAll,
+    @inject(TYPES.UserGetByPage) private readonly userGetByPage: UserGetByPage
   ) {
     super();
   }

@@ -1,11 +1,13 @@
 import { UserRepository } from "@user/domain/repositories/user.repository";
 import { User } from "@user/domain/roots/user";
+import { injectable } from "inversify";
 import { DatabaseBootstrap } from "src/bootstrap/database.bootstrap";
 import { IsNull } from "typeorm";
 
 import { UserDto } from "./dtos/user.dto";
 import { UserEntity } from "./entities/user.entity";
 
+@injectable()
 export class UserInfrastructure implements UserRepository {
   async save(user: User): Promise<void> {
     const repository =

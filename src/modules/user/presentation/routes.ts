@@ -1,13 +1,6 @@
+import { container, TYPES } from "@container";
 import { AuthenticationMiddleware } from "@core/middlewares/authentication.middleware";
 import { AuthorizationMiddleware } from "@core/middlewares/authorization.middleware";
-import {
-  UserGetAll,
-  UserGetById,
-  UserGetByPage,
-  UserSave,
-} from "@user/application";
-import { UserRepository } from "@user/domain/repositories/user.repository";
-import { UserInfrastructure } from "@user/infrastructure/user.infrastructure";
 import { Router } from "express";
 
 import { UserController } from "./controller";
@@ -60,7 +53,7 @@ export class UserRoute {
   }
 }
 
-const userRepository: UserRepository = new UserInfrastructure();
+/* const userRepository: UserRepository = new UserInfrastructure();
 
 const userSave = new UserSave(userRepository);
 const userGetAll = new UserGetAll(userRepository);
@@ -72,6 +65,8 @@ const controller = new UserController(
   userGetById,
   userGetAll,
   userGetByPage
-);
+); */
+
+const controller = container.get<UserController>(TYPES.UserController);
 
 export default new UserRoute(controller).router;

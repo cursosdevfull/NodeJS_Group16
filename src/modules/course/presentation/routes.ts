@@ -1,13 +1,6 @@
+import { container, TYPES } from "@container";
 import { AuthenticationMiddleware } from "@core/middlewares/authentication.middleware";
 import { AuthorizationMiddleware } from "@core/middlewares/authorization.middleware";
-import {
-  CourseGetAll,
-  CourseGetById,
-  CourseGetByPage,
-  CourseSave,
-} from "@course/application";
-import { CourseRepository } from "@course/domain/repositories/course.repository";
-import { CourseInfrastructure } from "@course/infrastructure/course.infrastructure";
 import { Router } from "express";
 
 import { CourseController } from "./controller";
@@ -60,7 +53,7 @@ export class CourseRoute {
   }
 }
 
-const courseRepository: CourseRepository = new CourseInfrastructure();
+/* const courseRepository: CourseRepository = new CourseInfrastructure();
 
 const courseSave = new CourseSave(courseRepository);
 const courseGetAll = new CourseGetAll(courseRepository);
@@ -72,6 +65,8 @@ const controller = new CourseController(
   courseGetAll,
   courseGetById,
   courseGetByPage
-);
+); */
+
+const controller = container.get<CourseController>(TYPES.CourseController);
 
 export default new CourseRoute(controller).router;

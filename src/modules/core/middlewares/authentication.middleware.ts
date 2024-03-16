@@ -20,8 +20,8 @@ export class AuthenticationMiddleware {
         .then((result: any) => {
           res.locals.roles = result.roles.map((role: any) => role.name);
           res.locals.userId = result.id;
-          if (validate2FA && !result.is2FAEnabled)
-            return res.status(401).json({ message: "Unauthorized" });
+          /*  if (validate2FA && !result.is2FAEnabled)
+            return res.status(401).json({ message: "Unauthorized" }); */
           return next();
         })
         .catch((error) => {

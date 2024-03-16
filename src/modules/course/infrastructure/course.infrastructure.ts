@@ -1,11 +1,13 @@
 import { Course } from "@course/domain/course";
 import { CourseRepository } from "@course/domain/repositories/course.repository";
+import { injectable } from "inversify";
 import { DatabaseBootstrap } from "src/bootstrap/database.bootstrap";
 import { IsNull } from "typeorm";
 
 import { CourseDto } from "./dtos/course.dto";
 import { CourseEntity } from "./entities/course.entity";
 
+@injectable()
 export class CourseInfrastructure implements CourseRepository {
   async save(course: Course) {
     const repository =

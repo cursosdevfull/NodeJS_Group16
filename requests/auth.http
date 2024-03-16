@@ -3,7 +3,8 @@ content-type: application/json
 
 {
     "email": "sergio@email.com",
-    "password": "12345"
+    "password": "12345",
+    "recaptchaCode": "03AGdBq27t3Z"
 }
 
 ###
