@@ -1,15 +1,15 @@
-import { IError } from "@core/interfaces/ierror.interface";
-import { UserRepository } from "@user/domain/repositories/user.repository";
-import { User } from "@user/domain/roots/user";
-import { injectable } from "inversify";
-import { err, ok, Result } from "neverthrow";
-import { DatabaseBootstrap } from "src/bootstrap/database.bootstrap";
-import { IsNull } from "typeorm";
+import { IError } from '@core/interfaces/ierror.interface';
+import { UserRepository } from '@user/domain/repositories/user.repository';
+import { User } from '@user/domain/roots/user';
+import { injectable } from 'inversify';
+import { err, ok, Result } from 'neverthrow';
+import { DatabaseBootstrap } from 'src/bootstrap/database.bootstrap';
+import { IsNull } from 'typeorm';
 
-import { UserDto } from "./dtos/user.dto";
-import { UserEntity } from "./entities/user.entity";
+import { UserDto } from './dtos/user.dto';
+import { UserEntity } from './entities/user.entity';
 
-export type TResultSave = Result<void, IError>;
+export type TResultSave = Result<User, IError>;
 export type TResultGetAll = Result<User[], IError>;
 export type TResultGetById = Result<User, IError>;
 export type TResultGetByPage = Result<User[], IError>;
@@ -24,6 +24,7 @@ export class UserInfrastructure implements UserRepository {
         DatabaseBootstrap.getDataSource().getRepository(UserEntity);
       const userEntity = UserDto.fromDomainToData(user) as UserEntity;
       await repository.save(userEntity);
+      return ok(user);
     } catch (error) {
       const objError: IError = new Error("Error saving user");
       objError.stack = JSON.stringify(error);
@@ -98,9 +99,16 @@ export class UserInfrastructure implements UserRepository {
         where: { email, deletedAt: IsNull() },
         relations: ["roles"],
       });
+      if (!userEntity) {
+        const objError: IError = new Error("user not found");
+        objError.stack = "User not found with this email";
+        objError.status = 404;
+
+        return err(objError);
+      }
       return ok(UserDto.fromDataToDomain(userEntity) as User);
     } catch (error) {
-      const objError: IError = new Error("Error saving user");
+      const objError: IError = new Error("Error get user by email");
       objError.stack = JSON.stringify(error);
       objError.status = 500;
 

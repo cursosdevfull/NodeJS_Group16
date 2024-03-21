@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 12345
+    ports:
+      - "9200:3306"
+    volumes:
+      - curso-mysql:/var/lib/mysql
+
+  redis-server:
+    image: redis:6.0.5-alpine
+    container_name: redis-server
+    command: redis-server --requirepass todovale
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_interval: 5s
+
+  redis-client:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-client
+    restart: unless-stopped
+    environment:
+      REDIS_HOST: redis-server
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: todovale
+    ports:
+      - "8081:8081"
+
+volumes:
+  curso-mysql:

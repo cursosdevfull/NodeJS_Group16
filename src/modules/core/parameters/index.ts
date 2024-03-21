@@ -1,6 +1,6 @@
-import { CourseEntity } from "@course/infrastructure/entities/course.entity";
-import { RoleEntity } from "@role/infrastructure/entities/role.entity";
-import { UserEntity } from "@user/infrastructure/entities/user.entity";
+import { CourseEntity } from '@course/infrastructure/entities/course.entity';
+import { RoleEntity } from '@role/infrastructure/entities/role.entity';
+import { UserEntity } from '@user/infrastructure/entities/user.entity';
 
 export class Parameters {
   static get port(): number {
@@ -31,5 +31,13 @@ export class Parameters {
 
   static get recaptchaSecretKeyPrivate(): string {
     return process.env.RECAPTCHA_SECRET_KEY_PRIVATE;
+  }
+
+  static get dbRedisConfig() {
+    return {
+      host: process.env.REDIS_HOST,
+      port: Number(process.env.REDIS_PORT),
+      password: process.env.REDIS_PASSWORD,
+    };
   }
 }

@@ -33,7 +33,7 @@ export class RegisterComponent {
       .subscribe((data: any) => {
         this.router.navigate(['/enable-fa'], {
           queryParams: {
-            accessToken: data.accessToken,
+            accessToken: data.value.accessToken,
             secret: data.secret,
             qrCode: data.qrCode,
           },

@@ -3,6 +3,7 @@ import { CourseGetAll, CourseGetById, CourseGetByPage, CourseSave } from '@cours
 import { Course, CourseProperties } from '@course/domain/course';
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
+import { RedisBootstrap } from 'src/bootstrap/redis.bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CourseCreateDto } from './dtos/course-create.dto';
@@ -81,7 +82,12 @@ export class CourseController extends ControllerBase {
 
   async getAll(req: Request, res: Response) {
     const courses = await this.courseGetAll.execute();
-    res.json(CourseResponseDto.fromDomainToResponse(courses));
+    const response = CourseResponseDto.fromDomainToResponse(courses);
+
+    await RedisBootstrap.set(res.locals.cacheKey, JSON.stringify(response));
+
+    console.log("Response from database");
+    res.json(response);
   }
 
   async getById(req: Request, res: Response) {

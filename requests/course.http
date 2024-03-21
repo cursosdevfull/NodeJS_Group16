@@ -1,5 +1,6 @@
-post http://localhost:3000/course
+post http://localhost:4000/course
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwibmFtZSI6InNlcmdpbyIsImxhc3RuYW1lIjoiaGlkYWxnbyIsInJvbGVzIjpbeyJyb2xlSWQiOjEsIm5hbWUiOiJBRE1JTiJ9LHsicm9sZUlkIjoyLCJuYW1lIjoiT1BFUkFUT1IifV0sImlzMkZBRW5hYmxlZCI6dHJ1ZSwiaWF0IjoxNzEwODE0NzQ5LCJleHAiOjE3MTExMTQ3NDl9.Q_g7qPI5ZTJ3ktkMhjlJYEJDeoilqbuEWyb7rnjWOk0
 
 {
     "title": "Microservicios con NestJS y Pulumi3"
@@ -14,7 +15,8 @@ content-type: application/json
 }
 
 ###
-get http://localhost:3000/course
+get http://localhost:4000/course
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwibmFtZSI6InNlcmdpbyIsImxhc3RuYW1lIjoiaGlkYWxnbyIsInJvbGVzIjpbeyJyb2xlSWQiOjEsIm5hbWUiOiJBRE1JTiJ9LHsicm9sZUlkIjoyLCJuYW1lIjoiT1BFUkFUT1IifV0sImlzMkZBRW5hYmxlZCI6dHJ1ZSwiaWF0IjoxNzEwODE0NzQ5LCJleHAiOjE3MTExMTQ3NDl9.Q_g7qPI5ZTJ3ktkMhjlJYEJDeoilqbuEWyb7rnjWOk0
 
 ###
 delete http://localhost:3000/course/fb36b02d-2382-4e19-82f7-f3768ba5dfb0

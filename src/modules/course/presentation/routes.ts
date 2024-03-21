@@ -1,9 +1,10 @@
-import { container } from "@container";
-import { AuthenticationMiddleware } from "@core/middlewares/authentication.middleware";
-import { AuthorizationMiddleware } from "@core/middlewares/authorization.middleware";
-import { Router } from "express";
+import { container } from '@container';
+import { AuthenticationMiddleware } from '@core/middlewares/authentication.middleware';
+import { AuthorizationMiddleware } from '@core/middlewares/authorization.middleware';
+import { CacheMiddleware } from '@core/middlewares/cache.middleware';
+import { Router } from 'express';
 
-import { CourseController } from "./controller";
+import { CourseController } from './controller';
 
 export class CourseRoute {
   readonly router: Router;
@@ -36,6 +37,7 @@ export class CourseRoute {
       "/",
       AuthenticationMiddleware.execute(),
       AuthorizationMiddleware.execute("ADMIN", "USER"),
+      CacheMiddleware.build("course-get-all"),
       this.controller.getAll.bind(this.controller)
     );
     this.router.get(
