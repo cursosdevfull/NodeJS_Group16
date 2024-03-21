@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "clean": "rimraf dist cache",
+    "build": "npm run clean && tsc && gulp minify",
     "start:dev": "nodemon src/index.ts",
-    "start:prod": "node dist/src/index.js"
+    "start:prod": "node -r ./tsconfig-paths-bootstrap.js dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -30,8 +31,12 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
     "@types/uuid": "^9.0.8",
+    "gulp": "^4.0.2",
+    "gulp-uglify-es": "^3.0.0",
     "nodemon": "^3.0.3",
-    "tsconfig-paths": "^4.2.0"
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
   },
   "dependencies": {
     "apollo-server-express": "^3.13.0",
@@ -52,6 +57,7 @@
     "speakeasy": "^2.0.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
+    "tsconfig-paths": "^4.2.0",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.3.20",
     "uuid": "^9.0.1"

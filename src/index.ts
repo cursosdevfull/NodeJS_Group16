@@ -1,14 +1,14 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
-import app from './app';
-import { TInitialize } from './bootstrap/bootstrap.interface';
-import { DatabaseBootstrap } from './bootstrap/database.bootstrap';
-import { RedisBootstrap } from './bootstrap/redis.bootstrap';
-import { ServerBootstrap } from './bootstrap/server.bootstrap';
+import app from "./app";
+import { TInitialize } from "./bootstrap/bootstrap.interface";
+import { DatabaseBootstrap } from "./bootstrap/database.bootstrap";
+import { RedisBootstrap } from "./bootstrap/redis.bootstrap";
+import { ServerBootstrap } from "./bootstrap/server.bootstrap";
 
-dotenv.config();
+dotenv.config({ path: "env.txt" });
 
 (async () => {
   const server = new ServerBootstrap(app);

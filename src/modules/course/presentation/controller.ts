@@ -1,17 +1,22 @@
-import { ControllerBase } from '@core/presentation/controller-base';
-import { CourseGetAll, CourseGetById, CourseGetByPage, CourseSave } from '@course/application';
-import { Course, CourseProperties } from '@course/domain/course';
-import { Request, Response } from 'express';
-import { inject, injectable } from 'inversify';
-import { RedisBootstrap } from 'src/bootstrap/redis.bootstrap';
-import { v4 as uuidv4 } from 'uuid';
+import { ControllerBase } from "@core/presentation/controller-base";
+import {
+  CourseGetAll,
+  CourseGetById,
+  CourseGetByPage,
+  CourseSave,
+} from "@course/application";
+import { Course, CourseProperties } from "@course/domain/course";
+import { Request, Response } from "express";
+import { inject, injectable } from "inversify";
+import { v4 as uuidv4 } from "uuid";
 
-import { CourseCreateDto } from './dtos/course-create.dto';
-import { CourseDeleteDto } from './dtos/course-delete.dto';
-import { CourseGetByIdDto } from './dtos/course-get-by-id';
-import { CourseGetByPageDto } from './dtos/course-get-by-page';
-import { CourseResponseDto } from './dtos/course-response.dto';
-import { CourseUpdateDto } from './dtos/course-update.dto';
+import { RedisBootstrap } from "../../../bootstrap/redis.bootstrap";
+import { CourseCreateDto } from "./dtos/course-create.dto";
+import { CourseDeleteDto } from "./dtos/course-delete.dto";
+import { CourseGetByIdDto } from "./dtos/course-get-by-id";
+import { CourseGetByPageDto } from "./dtos/course-get-by-page";
+import { CourseResponseDto } from "./dtos/course-response.dto";
+import { CourseUpdateDto } from "./dtos/course-update.dto";
 
 @injectable()
 export class CourseController extends ControllerBase {

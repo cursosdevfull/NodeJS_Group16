@@ -1,13 +1,13 @@
-import { IError } from '@core/interfaces/ierror.interface';
-import { UserRepository } from '@user/domain/repositories/user.repository';
-import { User } from '@user/domain/roots/user';
-import { injectable } from 'inversify';
-import { err, ok, Result } from 'neverthrow';
-import { DatabaseBootstrap } from 'src/bootstrap/database.bootstrap';
-import { IsNull } from 'typeorm';
+import { IError } from "@core/interfaces/ierror.interface";
+import { UserRepository } from "@user/domain/repositories/user.repository";
+import { User } from "@user/domain/roots/user";
+import { injectable } from "inversify";
+import { err, ok, Result } from "neverthrow";
+import { IsNull } from "typeorm";
 
-import { UserDto } from './dtos/user.dto';
-import { UserEntity } from './entities/user.entity';
+import { DatabaseBootstrap } from "../../../bootstrap/database.bootstrap";
+import { UserDto } from "./dtos/user.dto";
+import { UserEntity } from "./entities/user.entity";
 
 export type TResultSave = Result<User, IError>;
 export type TResultGetAll = Result<User[], IError>;

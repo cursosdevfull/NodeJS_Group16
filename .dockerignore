@@ -1,0 +1,5 @@
+appFrontend
+node_modules
+requests
+cache
+dist

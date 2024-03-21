@@ -1,9 +1,9 @@
 import { Course } from "@course/domain/course";
 import { CourseRepository } from "@course/domain/repositories/course.repository";
 import { injectable } from "inversify";
-import { DatabaseBootstrap } from "src/bootstrap/database.bootstrap";
 import { IsNull } from "typeorm";
 
+import { DatabaseBootstrap } from "../../../bootstrap/database.bootstrap";
 import { CourseDto } from "./dtos/course.dto";
 import { CourseEntity } from "./entities/course.entity";
 

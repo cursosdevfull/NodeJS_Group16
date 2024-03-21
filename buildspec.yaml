@@ -1,0 +1,23 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+  pre_build:
+    commands:
+      - echo Logging into AWS ECR
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 282865065290.dkr.ecr.us-east-1.amazonaws.com/cursonodejs16
+      - ENVIRONMENT=$(echo $environment)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Extracting environment file
+      - aws s3 cp s3://devops-cursonodejs16/$ENVIRONMENT/env.txt env.txt
+      - echo Building the docker image
+      - docker-compose -f compose-prd.yaml build
+  post_build:
+    commands:
+      - docker-compose -f compose-prd.yaml push
+artifacts:
+  files:
+    - "Dockerrun.aws.json"
