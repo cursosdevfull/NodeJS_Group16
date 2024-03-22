@@ -3,3 +3,6 @@ test
 .env
 appFrontend
 appInversify
+env.txt
+cache
+dist
