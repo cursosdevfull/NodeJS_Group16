@@ -3,3 +3,7 @@ test
 src
 node_modules
 appFrontend
+cache
+dist
+node_modules
+env.txt
