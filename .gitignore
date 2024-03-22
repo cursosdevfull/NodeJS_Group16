@@ -1,2 +1,6 @@
 node_modules
 src
+appFrontend
+cache
+dist
+env.txt
