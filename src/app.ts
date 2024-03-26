@@ -1,17 +1,21 @@
-import { HandlerErrorGeneral, HandlerErrorNotFound } from '@core/handle-errors/errors';
-import { Parameters } from '@core/parameters';
-import { CourseResolver } from '@course/presentation/resolvers/course.resolver';
-import { ApolloServer } from 'apollo-server-express';
-import cors from 'cors';
-import express, { Application } from 'express';
-import { buildSchema } from 'type-graphql';
+import {
+  HandlerErrorGeneral,
+  HandlerErrorNotFound,
+} from "@core/handle-errors/errors";
+import { Parameters } from "@core/parameters";
+import { CourseResolver } from "@course/presentation/resolvers/course.resolver";
+import { ApolloServer } from "apollo-server-express";
+import cors from "cors";
+import express, { Application } from "express";
+import { buildSchema } from "type-graphql";
 
-import { RedisBootstrap } from './bootstrap/redis.bootstrap';
-import AuthRouter from './modules/auth/presentation/routes';
-import { interceptor } from './modules/core/interceptors/interceptor';
-import CourseRouter from './modules/course/presentation/routes';
-import UserRouter from './modules/user/presentation/routes';
-import { swaggerDocs as SwaggerDocs } from './swagger/swagger';
+import { RedisBootstrap } from "./bootstrap/redis.bootstrap";
+import AuthRouter from "./modules/auth/presentation/routes";
+import { interceptor } from "./modules/core/interceptors/interceptor";
+import CourseRouter from "./modules/course/presentation/routes";
+import GenerateUrlPresignedRouter from "./modules/generate-url-upload/presentation/routes";
+import UserRouter from "./modules/user/presentation/routes";
+import { swaggerDocs as SwaggerDocs } from "./swagger/swagger";
 
 class App {
   expressApp: Application;
@@ -64,6 +68,7 @@ class App {
     this.expressApp.use("/course", CourseRouter);
     this.expressApp.use("/user", UserRouter);
     this.expressApp.use("/auth", AuthRouter);
+    this.expressApp.use("/generate-url-upload", GenerateUrlPresignedRouter);
   }
 
   mountHelpers() {

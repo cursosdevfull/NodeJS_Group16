@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="D:\Cursos\node16\test\my-first-test.spec.ts">
+    <testCase name="My First Test Number of cats is 4" duration="12"/>
+  </file>
+  <file path="D:\Cursos\node16\test\course\application\course-get-all.spec.ts">
+    <testCase name="CourseGetAll should return all courses" duration="29"/>
+  </file>
+  <file path="D:\Cursos\node16\test\course\application\course-save.spec.ts">
+    <testCase name="CourseSave should save a course" duration="16"/>
+  </file>
+  <file path="D:\Cursos\node16\test\course\application\course-get-by-id.spec.ts">
+    <testCase name="CourseGetById should return the course with the provided id" duration="12"/>
+  </file>
+</testExecutions>

@@ -1,0 +1,2 @@
+get http://localhost:80/generate-url-upload?extension=jpg
+

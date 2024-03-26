@@ -1,6 +1,6 @@
-import { CourseEntity } from '@course/infrastructure/entities/course.entity';
-import { RoleEntity } from '@role/infrastructure/entities/role.entity';
-import { UserEntity } from '@user/infrastructure/entities/user.entity';
+import { CourseEntity } from "../../course/infrastructure/entities/course.entity";
+import { RoleEntity } from "../../role/infrastructure/entities/role.entity";
+import { UserEntity } from "../../user/infrastructure/entities/user.entity";
 
 export class Parameters {
   static get port(): number {
@@ -39,5 +39,13 @@ export class Parameters {
       port: Number(process.env.REDIS_PORT),
       password: process.env.REDIS_PASSWORD,
     };
+  }
+
+  static get bucketName(): string {
+    return process.env.BUCKET_NAME;
+  }
+
+  static get timeoutUrlPresigned(): number {
+    return Number(process.env.TIMEOUT_URL_PRESIGNED);
   }
 }

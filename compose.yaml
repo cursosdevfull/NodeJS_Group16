@@ -39,5 +39,12 @@ services:
     ports:
       - "8081:8081"
 
+  sonarqube:
+    image: sonarqube:8.6-community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+
 volumes:
   curso-mysql:
